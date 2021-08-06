@@ -274,3 +274,7 @@ C:\Users\eee_e\Desktop\Unity\Topdown-shooter-main\Topdown-shooter-main\obj\Debug
 C:\Users\eee_e\Desktop\Unity\Topdown-shooter-main\Topdown-shooter-main\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\eee_e\Desktop\Unity\Topdown-shooter-main\Topdown-shooter-main\obj\Debug\Assembly-CSharp.dll
 C:\Users\eee_e\Desktop\Unity\Topdown-shooter-main\Topdown-shooter-main\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Дашка\Desktop\Unity Projects\Unity_git\Topdown-shooter\obj\Debug\Assembly-CSharp.csproj.AssemblyReference.cache
+C:\Users\Дашка\Desktop\Unity Projects\Unity_git\Topdown-shooter\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+C:\Users\Дашка\Desktop\Unity Projects\Unity_git\Topdown-shooter\obj\Debug\Assembly-CSharp.dll
+C:\Users\Дашка\Desktop\Unity Projects\Unity_git\Topdown-shooter\obj\Debug\Assembly-CSharp.pdb

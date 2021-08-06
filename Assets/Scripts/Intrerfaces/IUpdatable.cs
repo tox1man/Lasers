@@ -1,5 +1,5 @@
 ﻿public interface IUpdatable
 {
-    public bool doUpdate { get; set; }
+    //public bool DoUpdate { get; set; }
     void Update();
 }

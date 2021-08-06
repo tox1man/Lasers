@@ -2,6 +2,7 @@
 
 public class EnemyController : IUpdatable
 {
+    public bool DoUpdate { get; set; }
     public GameObjectView EnemyView { get; private set; }
     public Enemy[] EnemyArray { get; private set; }
     private GameObject _enemyPool;
@@ -25,9 +26,9 @@ public class EnemyController : IUpdatable
         for (int i = 0; i < EnemyArray.Length; i++)
         {
             GameObject enemy;
-            EnemyArray[i] = new Enemy(EnemyView.ObjectPrefab, GetRandomPosition(), out enemy);
+            string enemyName = $"{Parameters.ENEMY_TAG} {i}";
+            EnemyArray[i] = new Enemy(EnemyView.ObjectPrefab, GetRandomPosition(), out enemy, enemyName);
 
-            enemy.name = $"{Parameters.ENEMY_TAG} {i}";
             enemy.tag = Parameters.ENEMY_TAG;
             enemy.transform.SetParent(_enemyPool.transform);
         }
