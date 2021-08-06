@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class ShootingController : IUpdatable, IFixedUpdatable
 {
-    private float _shootInterval = 1 / Parameters.SHOOTING_RATE;
+    public bool DoUpdate { get; set; }
     public GameObjectView View { get; private set; }
-    private BulletsController _bulletController;
+
+    private float _shootInterval;
+    private BulletsController _bulletsController;
 
     private Rigidbody[] _bulletsRigidbody;
     private Rigidbody _viewRidigbody;
@@ -22,20 +24,22 @@ public class ShootingController : IUpdatable, IFixedUpdatable
 
     public ShootingController(GameObjectView view)
     {
-        _bulletsRigidbody = new Rigidbody[Parameters.BULLET_POOL_CAPACITY];
+        View = view;
 
-        _bulletController = new BulletsController(_bulletsRigidbody);
+        _shootInterval = 1 / View.ShootingRate;
+        _bulletsRigidbody = new Rigidbody[View.Ammo];
+
+        _bulletsController = new BulletsController(_bulletsRigidbody, View);
         _enemyHits = new List<Ray>();
         _rayDistanceDictionary = new Dictionary<float, Ray>();
         
 
-        View = view;
         _viewRidigbody = View.GetComponent<Rigidbody>();
 
         _bulletStartPosition = View.transform.Find(Parameters.BARREL_OBJECT_NAME).transform.position;
 
         CreateBulletsContainer();
-        CreateBullets(Parameters.BULLET_POOL_CAPACITY);
+        CreateBullets(_bulletsRigidbody.Length);
     }
 
     /// <summary>
@@ -44,7 +48,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
     private void CreateBulletsContainer()
     {
         _bulletPrefab = View.BulletPrefab;
-        _bulletsPool = new GameObject(Parameters.BULLET_POOL_OBJECT_NAME);
+        _bulletsPool = GameObject.Find(Parameters.BULLET_POOL_OBJECT_NAME);
     }
 
     /// <summary>
@@ -53,9 +57,12 @@ public class ShootingController : IUpdatable, IFixedUpdatable
     /// <param name="amount">Amount of bullets to create.</param>
     private void CreateBullets(int amount)
     {
+        GameObject objectsBulletContainer = new GameObject($"{View.gameObject.name} {Parameters.BULLET_POOL_OBJECT_NAME}");
+        objectsBulletContainer.transform.SetParent(_bulletsPool.transform);
+
         for (int i = 0; i < amount; i++)
         {
-            var tempBullet = GameObject.Instantiate(_bulletPrefab, _bulletsPool.transform);
+            var tempBullet = GameObject.Instantiate(_bulletPrefab, objectsBulletContainer.transform);
             var bulletPosition = Vector3.zero;
             var bulletRigidbody = tempBullet.GetComponent<Rigidbody>();
             _bulletsRigidbody[i] = bulletRigidbody;
@@ -86,7 +93,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
                 Shoot(shortestRay);
 
                 // Reset shooting cooldown and delete all saved rays for the next frame.
-                _shootInterval = 1 / Parameters.SHOOTING_RATE;
+                _shootInterval = 1 / View.ShootingRate;
                 _rayDistanceDictionary.Clear();
                 return;
             }
@@ -100,7 +107,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
 
     public void FixedUpdate()
     {
-       _bulletController.FixedUpdate();
+       _bulletsController.FixedUpdate();
     }
 
     /// <summary>
@@ -132,7 +139,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
             // If raycast hits something, check if it is enemy, if so add that ray and its distance to dictionary.
             if (Physics.Raycast(origin, rayDirection.normalized, out hit, maxRayDistance))
             {
-                if (hit.collider.gameObject.CompareTag(Parameters.ENEMY_TAG))
+                if (!hit.collider.gameObject.CompareTag(View.gameObject.tag))
                 {
                     if(_rayDistanceDictionary.ContainsKey(hit.distance))
                     {
@@ -150,11 +157,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
     /// </summary>
     /// <param name="shootRay">Ray that describes shots origin and diretion.</param>
     private void Shoot(Ray shootRay)
-    {
-        ////////
-        Debug.DrawRay(shootRay.origin, shootRay.direction.normalized * Parameters.FOV_RAYCAST_MAXDISTANCE, Color.red);
-        ////////
-        
+    {        
         Rigidbody bullet = GetNextBullet();
         if (bullet != null)
         {

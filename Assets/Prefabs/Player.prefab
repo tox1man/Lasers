@@ -135,6 +135,7 @@ MonoBehaviour:
     type: 3}
   Health: 100
   Damage: 10
+  Ammo: 30
   Speed: 400
   RotationSpeed: 6
 --- !u!1 &4336084175421976414

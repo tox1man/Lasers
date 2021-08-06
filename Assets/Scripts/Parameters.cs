@@ -11,7 +11,6 @@ public static class Parameters
     // Shooting Parameters
     public const int FOV_RAYCAST_MAXDISTANCE = 10;
     public const int FOV_RAYCAST_STEP = 5;          // in degrees
-    public const float SHOOTING_RATE = 5f;          // number of shots per second
 
     // Bullet Parameters
     public const int BULLET_SHOOT_VELOCITY = 15;

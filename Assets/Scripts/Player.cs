@@ -2,6 +2,7 @@
 
 public class Player : IUpdatable, IFixedUpdatable
 {
+    public bool DoUpdate { get; set; }
     private GameObjectView _playerView;
     private InputController _inputController;
     private ShootingController _shootingController;

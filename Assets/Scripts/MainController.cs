@@ -66,7 +66,10 @@ public class MainController
     {
         foreach (IUpdatable controller in _controllersUpdatable)
         {
-            controller.Update();
+            //if(controller.DoUpdate) 
+            //{
+                controller.Update();
+            //}
         }
     }
 
@@ -80,6 +83,7 @@ public class MainController
 
     public void AddController(IUpdatable controller)
     {
+        //controller.DoUpdate = true;
         _controllersUpdatable.Add(controller);
     }
 

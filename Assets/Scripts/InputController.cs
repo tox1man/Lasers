@@ -2,6 +2,7 @@
 
 public class InputController : IUpdatable
 {
+    public bool DoUpdate { get; set; }
     private float _speedX;
     private float _speedZ;
 

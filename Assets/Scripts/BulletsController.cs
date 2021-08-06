@@ -3,13 +3,15 @@
 public class BulletsController : IFixedUpdatable
 {
     public Rigidbody[] Bullets { get; private set; }
+    private GameObjectView _parentObjectView;
 
     public delegate void HitAction(Collider other, int damageAmount);
     public static event HitAction OnEnemyHit;
 
-    public BulletsController(Rigidbody[] bullets)
+    public BulletsController(Rigidbody[] bullets, GameObjectView parentObjectView)
     {
         Bullets = bullets;
+        _parentObjectView = parentObjectView;
     }
 
     public void FixedUpdate()
@@ -50,7 +52,8 @@ public class BulletsController : IFixedUpdatable
         {
             for (int i = 0; i < collidersArray.Length; i++)
             {
-                if (collidersArray[i].gameObject.CompareTag(Parameters.ENEMY_TAG))
+                GameObjectView tempView;
+                if (!collidersArray[i].gameObject.CompareTag(_parentObjectView.gameObject.tag) && collidersArray[i].TryGetComponent<GameObjectView>(out tempView))
                 {
                     OnEnemyHit?.Invoke(collidersArray[i], 10);
                     DisableBullet(bullet.gameObject);
