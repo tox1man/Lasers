@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00809c4b3af745a44b103309bec30f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _floorTilePrefab: {fileID: 5303251686248589753, guid: ceb332a6bfc568d4d927aafd77590ba8,
+  _floorTilePrefab: {fileID: 4661359061998251971, guid: 6d4445d934cad39458ebbbb6666f01a6,
     type: 3}
   _levelSize: {x: 20, y: 20}
   _gridSize: 2
