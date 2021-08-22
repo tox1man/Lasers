@@ -3,28 +3,40 @@
 public class Player : IUpdatable, IFixedUpdatable
 {
     public bool DoUpdate { get; set; }
-    private GameObjectView _playerView;
+    private PlayerObjectView View;
     private InputController _inputController;
-    private ShootingController _shootingController;
+    private ShootingController<PlayerObjectView> _shootingController;
     private Rigidbody _playerRigidbody;
 
-    public Player(GameObjectView playerView, InputController inputController, Vector3 position)
+    public Player(PlayerObjectView playerView, InputController inputController, Vector3 position)
     {
         _inputController = inputController;
-        _playerView = playerView;
-        _playerRigidbody = _playerView.GetComponent<Rigidbody>();
+        View = playerView;
+        _playerRigidbody = View.GetComponent<Rigidbody>();
         _playerRigidbody.MovePosition(position);
 
-        _shootingController = new ShootingController(_playerView);
+        _shootingController = new ShootingController<PlayerObjectView>(View);
     }
 
     public void Update()
     {
-       _shootingController.Update();
+        if (!View.IsActive)
+        {
+            return;
+        }
+
+        View.CheckHealth();
+
+        _shootingController.Update();
     }
 
     public void FixedUpdate()
     {
+        if (!View.IsActive)
+        {
+            return;
+        }
+
         if (_playerRigidbody.velocity != Vector3.zero)
         {
             if(_inputController.Direction != Vector3.zero)
@@ -32,28 +44,14 @@ public class Player : IUpdatable, IFixedUpdatable
                 _inputController.LastDirection = _inputController.Direction;
             }
         }
-        RotatePlayer(_inputController.LastDirection);
-        MovePlayer(_inputController.Direction);
+        if (View.DoAnimate)
+        {
+            View.Rotate(_inputController.LastDirection);
+            View.Move(_inputController.Direction);
+        }
 
         _shootingController.FixedUpdate();
     }
 
-    private void MovePlayer(Vector3 direction)
-    {
-        _playerRigidbody.velocity = direction.normalized * _playerView.Speed * Time.fixedDeltaTime;
-    }
 
-    private void RotatePlayer(Vector3 direction)
-    {
-        Quaternion currentRotation = _playerView.transform.rotation.normalized;
-        if (direction.normalized != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
-
-            if(currentRotation != targetRotation)
-            {
-                _playerView.transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, _playerView.RotationSpeed);
-            }
-        }
-    }
 }

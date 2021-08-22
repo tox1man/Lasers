@@ -10,10 +10,10 @@ public class MainController
     private EnemyController _enemyController;
     private DamageController _damageController;
 
-    private readonly GameObjectView _playerView;
-    private readonly GameObjectView _enemyView;
+    private readonly PlayerObjectView _playerView;
+    private readonly EnemyObjectView _enemyView;
 
-    public MainController(GameObjectView playerView, GameObjectView enemyView)
+    public MainController(PlayerObjectView playerView, EnemyObjectView enemyView)
     {
         _playerView = playerView;
         _enemyView = enemyView;
@@ -66,10 +66,7 @@ public class MainController
     {
         foreach (IUpdatable controller in _controllersUpdatable)
         {
-            //if(controller.DoUpdate) 
-            //{
                 controller.Update();
-            //}
         }
     }
 
@@ -83,7 +80,6 @@ public class MainController
 
     public void AddController(IUpdatable controller)
     {
-        //controller.DoUpdate = true;
         _controllersUpdatable.Add(controller);
     }
 

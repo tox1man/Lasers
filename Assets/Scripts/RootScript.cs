@@ -3,8 +3,8 @@
 public class RootScript : MonoBehaviour
 {
     [Header("View components")]
-    [SerializeField] private GameObjectView _playerView;
-    [SerializeField] private GameObjectView _enemyView;
+    [SerializeField] private PlayerObjectView _playerView;
+    [SerializeField] private EnemyObjectView _enemyView;
 
     [Header("Gizmos parameters")]
     [SerializeField] private bool _drawRenderSphere;

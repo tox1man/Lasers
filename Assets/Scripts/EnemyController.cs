@@ -34,7 +34,6 @@ public class EnemyController : IUpdatable
         }
     }
 
-
     private Vector3 GetRandomPosition()
     {
         return new Vector3(Random.Range(-10f, 10f), 2f, Random.Range(-10f, 10f));

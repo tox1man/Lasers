@@ -8,6 +8,9 @@ public static class Parameters
     public const float MAX_RENDER_Y_DIST = -5f;     // vertical distance, below which object is disabled
     public const float MAX_RENDER_DIST_SQR = 1000f; // distance squared, behind which object is disabled
 
+    // Level Parameters
+    public const float LEVEL_TILE_HEIGHT = 50f;
+
     // Shooting Parameters
     public const int FOV_RAYCAST_MAXDISTANCE = 10;
     public const int FOV_RAYCAST_STEP = 5;          // in degrees
@@ -24,8 +27,9 @@ public static class Parameters
     // Enemy parameters
     public const string ENEMY_POOL_OBJECT_NAME = "Enemies";
 
-    // Tags
+    // Tags & names
     public const string PLAYER_TAG = "Player";
     public const string ENEMY_TAG = "Enemy";
     public const string BULLET_TAG = "Bullet";
+    public const string LEVEL_GAMEOBJECT_NAME = "Level";
 }
