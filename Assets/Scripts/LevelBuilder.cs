@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,23 +22,6 @@ public class LevelBuilder : MonoBehaviour
         LevelGrid = new Dictionary<Vector2Int, Vector3>();
 
         BuildLevel(new Vector2Int(_levelSize.x, _levelSize.y), _gridSize, out Tiles);
-        StartCoroutine(Anim());
-    }
-
-    public void Update()
-    {
-       
-    }
-
-    public IEnumerator Anim()
-    {
-        foreach (KeyValuePair<Vector2Int, LevelTileObjectView> kvp in Tiles)
-        {
-            yield return new WaitForSeconds(0.1f);
-            Debug.Log(Time.realtimeSinceStartup);
-            kvp.Value.DoAnimate = true;
-        }
-        StopCoroutine(Anim());
     }
 
     public void BuildLevel(Vector2Int levelSize, int gridSize, out Dictionary<Vector2Int, LevelTileObjectView> tiles)
@@ -51,16 +33,20 @@ public class LevelBuilder : MonoBehaviour
         {
             for(int j = 0; j < levelSize.y; j+=gridSize)
             {
+                Vector2Int coord = new Vector2Int(i, j);
                 Vector3 pos = new Vector3(j + _offset.x * j, 0f, i + _offset.y * i);
 
                 var tileObject = GameObject.Instantiate(_floorTilePrefab, pos, Quaternion.identity, _level.transform);
-                var tileView = tileObject.GetComponent<LevelTileObjectView>();
                 tileObject.transform.localScale = new Vector3(gridSize, Parameters.LEVEL_TILE_HEIGHT, gridSize);
                 tileObject.transform.position += Vector3.down * (Parameters.LEVEL_TILE_HEIGHT / 2);
                 tileObject.name = $"{_floorTilePrefab.name} {i}.{j}";
 
-                LevelGrid.Add(new Vector2Int(i, j), pos);
-                tiles.Add(new Vector2Int(i, j), tileView);
+                var tileView = tileObject.GetComponent<LevelTileObjectView>();
+                tileView.Coordinates = coord;
+                tileView.DoAnimate = true;
+
+                LevelGrid.Add(coord, pos);
+                tiles.Add(coord, tileView);
             }
         }
     }
