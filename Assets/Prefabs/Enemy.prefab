@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1754449031771289259}
   - component: {fileID: 1754449031771289256}
   - component: {fileID: 1754449031771289257}
-  - component: {fileID: 2516333473299027047}
+  - component: {fileID: 779514955363121886}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -116,7 +116,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2516333473299027047
+--- !u!114 &779514955363121886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,19 +125,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1754449031771289262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d436e9ced1072644dbede696d9054b70, type: 3}
+  m_Script: {fileID: 11500000, guid: b6a1e5ea578d8964980b174217fe658a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damagable: 1
+  DoUpdate: 1
+  DoAnimate: 1
   ObjectPrefab: {fileID: 1754449031771289262}
   Transform: {fileID: 1754449031771289269}
   BulletPrefab: {fileID: 2951778703540349880, guid: c561cbe8d1f85414b9ca5ba1f68c7803,
     type: 3}
-  Health: 200
+  MaxHealth: 150
+  Health: 150
   Damage: 5
-  Ammo: 5
-  ShootingRate: 1
-  Speed: 300
-  RotationSpeed: 6
+  Ammo: 10
+  ShootingRate: 3
+  Speed: 5
+  RotationSpeed: 5
 --- !u!1 &5231831023957997061
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ShootingController : IUpdatable, IFixedUpdatable
+public class ShootingController<T> : IUpdatable, IFixedUpdatable where T : AgentObjectView
 {
     public bool DoUpdate { get; set; }
-    public GameObjectView View { get; private set; }
+    public AgentObjectView View { get; private set; }
 
     private float _shootInterval;
     private BulletsController _bulletsController;
@@ -22,7 +22,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
 
     private Vector3 _bulletStartPosition;
 
-    public ShootingController(GameObjectView view)
+    public ShootingController(AgentObjectView view)
     {
         View = view;
 
@@ -83,7 +83,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
         // Ony try to shoot if standing still and there is no cooldown.
         if (_viewRidigbody.velocity == Vector3.zero && _shootInterval < 0f)
         {
-            if (SearchEnemy(Parameters.PLAYER_FOV, Parameters.FOV_RAYCAST_STEP, Parameters.FOV_RAYCAST_MAXDISTANCE))
+            if (SearchEnemyInCone(Parameters.PLAYER_FOV, Parameters.FOV_RAYCAST_STEP, Parameters.FOV_RAYCAST_MAXDISTANCE))
             {
                 // Find shortest ray that hit enemy.
                 float[] keys = _rayDistanceDictionary.Keys.ToArray();
@@ -117,7 +117,7 @@ public class ShootingController : IUpdatable, IFixedUpdatable
     /// <param name="stepSizeInDeg">Interval between rays cast.</param>
     /// <param name="maxRayDistance">Maximum ray magnitude.</param>
     /// <returns></returns>
-    private bool SearchEnemy(int angleInDeg, float stepSizeInDeg, int maxRayDistance)
+    private bool SearchEnemyInCone(int angleInDeg, float stepSizeInDeg, int maxRayDistance)
     {
         Vector3 origin = _bulletStartPosition;
         RaycastHit hit;
@@ -199,8 +199,9 @@ public class ShootingController : IUpdatable, IFixedUpdatable
         if (bullet == null)
         {
             Debug.LogException(new Exception("Cannot find availiable bullet."));
+            return bullet;
         }
-
+        
         bullet.gameObject.SetActive(true);
         return bullet;
     }

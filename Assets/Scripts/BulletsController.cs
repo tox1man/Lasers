@@ -52,8 +52,9 @@ public class BulletsController : IFixedUpdatable
         {
             for (int i = 0; i < collidersArray.Length; i++)
             {
-                GameObjectView tempView;
-                if (!collidersArray[i].gameObject.CompareTag(_parentObjectView.gameObject.tag) && collidersArray[i].TryGetComponent<GameObjectView>(out tempView))
+                AgentObjectView tempView;
+                var collider = collidersArray[i];
+                if (collider.TryGetComponent<AgentObjectView>(out tempView) && tempView.Damagable)
                 {
                     OnEnemyHit?.Invoke(collidersArray[i], 10);
                     DisableBullet(bullet.gameObject);

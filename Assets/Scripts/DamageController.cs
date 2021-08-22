@@ -14,11 +14,11 @@ public class DamageController
     {
         if (targetCollider != null)
         {
-            GameObjectView target;
-            if (targetCollider.gameObject.TryGetComponent<GameObjectView>(out target))
+            AgentObjectView target;
+            if (targetCollider.gameObject.TryGetComponent<AgentObjectView>(out target))
             {
                 target.Health = Mathf.Max(0, target.Health - dmg);
-                Debug.Log($"{targetCollider.gameObject.name} hit for {dmg} dmg. {target.Health} HP left.");
+                //Debug.Log($"{targetCollider.gameObject.name} hit for {dmg} dmg. {target.Health} HP left.");
             }
         }
         else
