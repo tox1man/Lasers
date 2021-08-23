@@ -132,14 +132,11 @@ public class ShootingController<T> : IUpdatable, IFixedUpdatable where T : Agent
             Quaternion rayRotation = Quaternion.Euler(0f, i, 0f);
             Vector3 rayDirection = rayRotation * forwardDir;
 
-            ////////
-            //Debug.DrawRay(origin, rayDirection.normalized * 10, Color.cyan);
-            ////////
-
             // If raycast hits something, check if it is enemy, if so add that ray and its distance to dictionary.
             if (Physics.Raycast(origin, rayDirection.normalized, out hit, maxRayDistance))
             {
-                if (!hit.collider.gameObject.CompareTag(View.gameObject.tag))
+                var enemy = hit.transform.gameObject;
+                if (!enemy.CompareTag(View.gameObject.tag) && enemy.GetComponent<GameObjectView>().Damagable)
                 {
                     if(_rayDistanceDictionary.ContainsKey(hit.distance))
                     {

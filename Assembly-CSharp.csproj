@@ -68,8 +68,8 @@
     <Compile Include="Assets\Scripts\View\PlayerObjectView.cs" />
     <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\View\LevelTileObjectView.cs" />
-    <Compile Include="Assets\Scripts\LevelBuilder.cs" />
+    <Compile Include="Assets\Scripts\View\TileObjectView.cs" />
+    <Compile Include="Assets\Scripts\LevelController.cs" />
     <Compile Include="Assets\Scripts\Parameters.cs" />
   </ItemGroup>
   <ItemGroup>

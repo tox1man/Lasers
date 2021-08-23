@@ -115,4 +115,4 @@ MonoBehaviour:
   Transform: {fileID: 5043962335425512187}
   WaveAmplitude: 0.1
   Frequency: 4
-  Mode: 4
+  Phase: 0
