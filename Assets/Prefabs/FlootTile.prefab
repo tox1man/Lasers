@@ -113,6 +113,7 @@ MonoBehaviour:
   DoAnimate: 0
   ObjectPrefab: {fileID: 4661359061998251971}
   Transform: {fileID: 5043962335425512187}
-  WaveAmplitude: 0.1
+  WaveAmplitude: 0.2
   Frequency: 4
+  Elevation: -25
   Phase: 0
