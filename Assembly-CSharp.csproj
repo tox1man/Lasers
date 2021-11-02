@@ -57,20 +57,29 @@
     <Compile Include="Assets\Scripts\RootScript.cs" />
     <Compile Include="Assets\Scripts\View\EnemyObjectView.cs" />
     <Compile Include="Assets\Scripts\Intrerfaces\IFixedUpdatable.cs" />
+    <Compile Include="Assets\Scripts\View\ModulesView\ReflectorView.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
-    <Compile Include="Assets\Scripts\MainController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\MainController.cs" />
     <Compile Include="Assets\Scripts\BulletsController.cs" />
+    <Compile Include="Assets\Scripts\View\ModulesView\AbsorberView.cs" />
+    <Compile Include="Assets\Scripts\ModuleControllerNEW.cs" />
+    <Compile Include="Assets\Scripts\Module.cs" />
     <Compile Include="Assets\Scripts\DamageController.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\View\ModuleObjectView.cs" />
     <Compile Include="Assets\Scripts\View\AgentObjectView.cs" />
+    <Compile Include="Assets\Scripts\View\ModulesView\EmitterView.cs" />
     <Compile Include="Assets\Scripts\View\GameObjectView.cs" />
     <Compile Include="Assets\Scripts\ShootingController.cs" />
     <Compile Include="Assets\Scripts\View\PlayerObjectView.cs" />
-    <Compile Include="Assets\Scripts\InputController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\InputController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\ModuleController.cs" />
     <Compile Include="Assets\Scripts\View\TileObjectView.cs" />
-    <Compile Include="Assets\Scripts\LevelController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
+    <Compile Include="Assets\Scripts\View\ModulesView\DisperserView.cs" />
     <Compile Include="Assets\Scripts\Parameters.cs" />
+    <Compile Include="Assets\Scripts\Laser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

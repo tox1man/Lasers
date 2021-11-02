@@ -1,9 +1,10 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - GameObjectView
+    - EnemyObjectView
+    - PlayerObjectView
     - RootScript
-    - tempWallScript
+    - TileObjectView
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
@@ -51,9 +52,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1562}
     - Class: 114
-      Script: {instanceID: 1656}
+      Script: {instanceID: 1604}
     - Class: 114
-      Script: {instanceID: 2606}
+      Script: {instanceID: 3884}
+    - Class: 114
+      Script: {instanceID: 4038}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 136
@@ -87,7 +90,7 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: 9fdb1264aee7ab554dad24104211b09e
+      Hash: 03ead0a086f5abced340535b212b8369
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: RootScript
@@ -111,6 +114,12 @@ ScriptsOnlyBuild:
     className: LayoutElement
   - hash:
       serializedVersion: 2
+      Hash: 1e94860c567895b4ceecd2f6feb1d236
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemyObjectView
+  - hash:
+      serializedVersion: 2
       Hash: 6bc76e17f0d5e93f3eea7f5a2fe227f3
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -127,12 +136,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: HorizontalLayoutGroup
-  - hash:
-      serializedVersion: 2
-      Hash: 6044177dbcf6b878f0f44127a43fc060
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameObjectView
   - hash:
       serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
@@ -255,12 +258,6 @@ ScriptsOnlyBuild:
     className: TestResultRendererCallback
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: tempWallScript
-  - hash:
-      serializedVersion: 2
       Hash: 748dd2a2a28da4e618912da5ac45684b
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
@@ -381,6 +378,12 @@ ScriptsOnlyBuild:
     className: AudioPlayableAsset
   - hash:
       serializedVersion: 2
+      Hash: 1e94860c567895b4ceecd2f6feb1d236
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: AgentObjectView
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
@@ -415,6 +418,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Mask
+  - hash:
+      serializedVersion: 2
+      Hash: c404b9c93d09d0cc54d195bebd8b9d48
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameObjectView
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -477,10 +486,22 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAsset
   - hash:
       serializedVersion: 2
+      Hash: 1e94860c567895b4ceecd2f6feb1d236
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerObjectView
+  - hash:
+      serializedVersion: 2
       Hash: e7a73f5f78ba6445195ec23b74a1ce2d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_ScrollbarEventHandler
+  - hash:
+      serializedVersion: 2
+      Hash: 6c3658bd07e62d4bf0c0cbfeaaa62c67
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TileObjectView
   - hash:
       serializedVersion: 2
       Hash: 8220b46879dc5e37db1b940c938f5744
@@ -508,4 +529,4 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/eee_e/Desktop/Unity/git_Topdown/Builds/TopDown shooter.exe
+  playerPath: A:/GeekBrains gamedev/unity git/TopDown shooter/Builds/TopDown shooter.exe

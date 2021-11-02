@@ -134,6 +134,7 @@ MonoBehaviour:
   DoAnimate: 1
   ObjectPrefab: {fileID: 4032788838870005478}
   Transform: {fileID: 4032788838870005497}
+  ViewRigidbody: {fileID: 0}
   BulletPrefab: {fileID: 2951778703540349880, guid: c561cbe8d1f85414b9ca5ba1f68c7803,
     type: 3}
   MaxHealth: 100
@@ -141,7 +142,7 @@ MonoBehaviour:
   Damage: 10
   Ammo: 25
   ShootingRate: 5
-  Speed: 400
+  Speed: 3
   RotationSpeed: 6
 --- !u!1 &4336084175421976414
 GameObject:
