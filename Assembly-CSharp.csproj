@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,39 +47,35 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.11</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.14</UnityProjectGeneratorVersion>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2020.3.16f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Scripts\Intrerfaces\IUpdatable.cs" />
     <Compile Include="Assets\Scripts\RootScript.cs" />
-    <Compile Include="Assets\Scripts\View\EnemyObjectView.cs" />
     <Compile Include="Assets\Scripts\Intrerfaces\IFixedUpdatable.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\ReflectorView.cs" />
-    <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MainController.cs" />
-    <Compile Include="Assets\Scripts\BulletsController.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\AbsorberView.cs" />
-    <Compile Include="Assets\Scripts\ModuleControllerNEW.cs" />
+    <Compile Include="Assets\Scripts\ModuleController.cs" />
     <Compile Include="Assets\Scripts\Module.cs" />
-    <Compile Include="Assets\Scripts\DamageController.cs" />
-    <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\View\ModuleObjectView.cs" />
-    <Compile Include="Assets\Scripts\View\AgentObjectView.cs" />
+    <Compile Include="Assets\Scripts\Laser.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\EmitterView.cs" />
+    <Compile Include="Assets\Scripts\Controllers\StageConfigurator.cs" />
+    <Compile Include="Assets\Scripts\Controllers\GoalController.cs" />
     <Compile Include="Assets\Scripts\View\GameObjectView.cs" />
-    <Compile Include="Assets\Scripts\ShootingController.cs" />
-    <Compile Include="Assets\Scripts\View\PlayerObjectView.cs" />
     <Compile Include="Assets\Scripts\Controllers\InputController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\ModuleController.cs" />
     <Compile Include="Assets\Scripts\View\TileObjectView.cs" />
     <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\DisperserView.cs" />
     <Compile Include="Assets\Scripts\Parameters.cs" />
-    <Compile Include="Assets\Scripts\Laser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
-using UnityEditor;
-using System.Reflection;
 
 public class RootScript : MonoBehaviour
 {
     [Header("View components")]
-    [SerializeField] private PlayerObjectView _playerView;
-    //[SerializeField] private EnemyObjectView _enemyView;
     [SerializeField] public ModuleObjectView[] _moduleViews;
 
     [Header("Level")]
@@ -16,15 +12,12 @@ public class RootScript : MonoBehaviour
     [SerializeField] [Range(0f, 1f)] public float OffsetSize = 0.1f;
     [SerializeField] public Parameters.WaveMode AnimationMode;
 
-    [Header("Gizmos parameters")]
-    [SerializeField] private bool _drawRenderSphere;
-    [SerializeField] private bool _drawRenderPlane;
-    [SerializeField] private bool _drawVisionCone;
-
-    public LevelController _level;
+    public LevelController Level;
+    public GoalController GoalController;
+    public StageConfigurator StageConfig;
     private MainController _mainController;
-    [HideInInspector] public int[] _moduleAmounts;
-
+    /*[HideInInspector]*/ public int[] ModuleAmounts;
+     
     float deltaTime = 0.0f;
 
     public delegate void Action(int viewIndex, bool addAmount);
@@ -33,61 +26,34 @@ public class RootScript : MonoBehaviour
     {
         ModulesAmountChanged?.Invoke(viewIndex, addAmount);
     }
-
     public void Awake()
     {
         gameObject.name = Parameters.ROOT_OBJECT_NAME;
 
-        _level = new LevelController();
-        _level.Start();
+        Level = new LevelController();
+        Level.Start();
 
         _mainController = new MainController();
         _mainController.Start();
     }
-
     public void Update()
     {
-        _level.Update();
+        Level.Update();
         _mainController.Update();
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
-
     public void FixedUpdate()
     {
         _mainController.FixedUpdate();
     }
-
     public void OnDestroy()
     {
         _mainController.OnDestroy();
     }
-
-    public void OnDrawGizmos()
-    {
-        if (_drawRenderSphere)
-        { 
-            Gizmos.DrawWireSphere(Vector3.zero, Mathf.Sqrt(Parameters.MAX_RENDER_DIST_SQR));
-        }
-        if (_drawRenderPlane)
-        {
-            Gizmos.DrawCube(new Vector3(0f, Parameters.MAX_RENDER_Y_DIST, 0f), new Vector3(100f, 1f, 100f));
-        }
-        if (_drawVisionCone)
-        {
-            //Vector3 leftRayDirection = Quaternion.Euler(0f, -Parameters.PLAYER_FOV / 2, 0f) * _playerView.transform.forward;
-            //Vector3 rightRayDirection = Quaternion.Euler(0f, Parameters.PLAYER_FOV / 2, 0f) * _playerView.transform.forward;
-
-            //Debug.DrawRay(_playerView.transform.position, leftRayDirection.normalized * 10, Color.cyan);
-            //Debug.DrawRay(_playerView.transform.position, rightRayDirection.normalized * 10, Color.cyan);
-
-        }
-    }
-
     void OnGUI()
     {
         ShowFPS();
     }
-
     private void ShowFPS()
     {
         int w = Screen.width, h = Screen.height;

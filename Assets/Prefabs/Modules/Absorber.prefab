@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2966413038792348201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 24}
+  m_LocalPosition: {x: 2.4, y: -0.19988239, z: 24}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 5936759441602367394}
@@ -116,11 +116,12 @@ MonoBehaviour:
   DoAnimate: 0
   RotationSpeed: 0
   Type: 0
-  laserPrefab: {fileID: 0}
+  laserPrefab: {fileID: 6390495340930493647, guid: ecc2bb1b96114614b89da7e41a868e42,
+    type: 3}
+  Renderer: {fileID: 2966413038792348203}
+  Lasers: []
   InputColors: []
-  Laser: {fileID: 5936759441602367395}
   LaserDirection: 1
-  indexColor: 3
 --- !u!1001 &778000020335272815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -208,12 +209,6 @@ PrefabInstance:
 --- !u!4 &5936759441602367394 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6390495340930493645, guid: ecc2bb1b96114614b89da7e41a868e42,
-    type: 3}
-  m_PrefabInstance: {fileID: 778000020335272815}
-  m_PrefabAsset: {fileID: 0}
---- !u!120 &5936759441602367395 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 6390495340930493644, guid: ecc2bb1b96114614b89da7e41a868e42,
     type: 3}
   m_PrefabInstance: {fileID: 778000020335272815}
   m_PrefabAsset: {fileID: 0}

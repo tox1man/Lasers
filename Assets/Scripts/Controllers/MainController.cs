@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using static Parameters;
 public class MainController
 {
     private List<IUpdatable> _controllersUpdatable;
     private List<IFixedUpdatable> _controllersFixedUpdatable;
 
-    private Player _playerController;
+    private RootScript _root;
+
     private InputController _inputController;
-    private ModuleControllerNEW _moduleController;
+    private ModuleController _moduleController;
+    private GoalController _goalController;
 
     private ModuleObjectView[] _moduleViews;
 
     public void Start()
     {
-        _moduleViews = GameObject.Find(Parameters.ROOT_OBJECT_NAME).GetComponent<RootScript>()._moduleViews;
+        _root = GetRoot();
+        _moduleViews = _root.GetComponent<RootScript>()._moduleViews;
 
         _controllersUpdatable = new List<IUpdatable>();
         _controllersFixedUpdatable = new List<IFixedUpdatable>();
@@ -41,8 +44,12 @@ public class MainController
         _inputController = new InputController();
         AddController(_inputController);
 
-        _moduleController = new ModuleControllerNEW(_moduleViews);
+        _moduleController = new ModuleController(_moduleViews);
         AddController(_moduleController);
+
+        _goalController = new GoalController();
+        _root.GoalController = _goalController;
+        AddController(_goalController);
     }
 
     private void UpdateControllers()

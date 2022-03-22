@@ -26,15 +26,15 @@ public class GameObjectView : MonoBehaviour
     /// Moves this agent in direction.
     /// </summary>
     /// <param name="direction">Direction to move towards.</param>
-    //public void Move(Vector3 direction)
-    //{
-    //    Transform.position = new Vector3(direction.x, Transform.position.y, direction.z);
-    //}
-    //public void Move(KeyValuePair<Vector2Int, TileObjectView> kvp)
-    //{
-    //    CurrentTile = kvp;
-    //    Move(CurrentTile.Value.Transform.position);
-    //}
+    public void Move(Vector3 direction)
+    {
+        Transform.position = new Vector3(direction.x, Transform.position.y, direction.z);
+    }
+    public void Move(KeyValuePair<Vector2Int, TileObjectView> kvp)
+    {
+        CurrentTile = kvp;
+        Move(CurrentTile.Value.Transform.position);
+    }
 
     /// <summary>
     /// Performs gradual rotation towards target direction.

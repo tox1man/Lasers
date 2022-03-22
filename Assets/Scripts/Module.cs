@@ -1,63 +1,81 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using static Parameters;
-public class Module : IUpdatable, IFixedUpdatable
+public class Module : IUpdatable
 {
     public ModuleObjectView View { get;  private set; }
-    public ModuleType Type { get; private set; }
     private GameObject _moduleGameObject;
-    private Laser _laser;
 
     public Module(ModuleObjectView view, out GameObject _moduleGameObject)
     {
         View = view;
-        _moduleGameObject = CreateModuleGameobject(View.Transform.position, Direction.East);
+        _moduleGameObject = CreateModuleGameobject(View.Transform.position);
 
-        if (View.Type == ModuleType.Emitter)
+        switch (View.Type)
         {
-            CreateLaser();
+            case ModuleType.Absorber:
+                break;
+            case ModuleType.Disperser:
+                CreateLaser(false, Direction.East, LaserColors.White);
+                CreateLaser(false, Direction.East, LaserColors.White);
+                CreateLaser(false, Direction.East, LaserColors.White);
+                break;
+            case ModuleType.Reflector:
+                break;
+            case ModuleType.Emitter:
+                CreateLaser(true, GetRandomLaserDirection(), GetRandomLaserColor()); //RANDOM DIR AND COLOR!
+                break;
         }
     }
-    private GameObject CreateModuleGameobject(Vector3 pos, Direction dir)
+        
+    public void Update()
+    {
+        if (!View || !View.IsActive) return;
+
+        foreach(Laser laser in View.Lasers)
+        {
+            if (View.Type != ModuleType.Emitter) View.ToggleLaserFromEditor(laser, false);
+            if (laser.Line.enabled)
+            {
+                laser.Shoot(GetVectorFromDir(View.LaserDirection), 100f);
+            }
+        }
+        if (View.ApplyColor(View.MixColors(View.InputColors.ToArray())))
+        {
+            GetRoot().GoalController.OnAbsorberColorChanged(GetModulesByType(View.Type));
+        }
+    }
+    public Laser CreateLaser(bool isEnabled, Direction direction, LaserColor laserColor)
+    {
+        GameObject laserObject = GameObject.Instantiate(View.laserPrefab, _moduleGameObject.transform);
+        Laser laser = laserObject.GetComponent<Laser>();
+
+        laser.ToggleFromEditor = isEnabled;
+        laser.Line = laserObject.GetComponent<LineRenderer>();
+        laser.Line.enabled = laser.ToggleFromEditor;
+
+        View.LaserDirection = direction;
+
+        laser.View = View;
+        laser.LaserColor = laserColor;
+        laser.Direction = GetVectorFromDir(direction);
+
+        View.Lasers.Add(laser);
+
+        return laser;
+    }
+    public void DeleteGameObject()
+    {
+        View = null;
+        GameObject.Destroy(_moduleGameObject);
+    }
+    private GameObject CreateModuleGameobject(Vector3 pos)
     {
         _moduleGameObject = GameObject.Instantiate(View.ObjectPrefab, pos, Quaternion.identity);
         _moduleGameObject.transform.Translate(Vector2.up * LEVEL_TILE_HEIGHT / 2);
         _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y);
 
         View = _moduleGameObject.GetComponent<ModuleObjectView>();
-        View.LaserDirection = dir;
 
         return _moduleGameObject;
-    }
-
-    public void CreateLaser()
-    {
-        View.Laser = GameObject.Instantiate(View.laserPrefab, _moduleGameObject.transform).GetComponent<LineRenderer>();
-        View.indexColor = Random.Range(1, LASER_COLORS.Length);
-        _laser = new Laser(View);
-    }
-
-    public void Update()
-    {
-        if (!View || !View.IsActive)
-        {
-            return;
-        }
-        _laser?.Shoot();
-
-        View.ApplyColor(View.MixColors(View.InputColors.ToArray()));
-    }
-    public void FixedUpdate()
-    {
-        if (!View.IsActive)
-        {
-            return;
-        }
-    }
-
-    public void DeleteGameObject()
-    {
-        View = null;
-        GameObject.Destroy(_moduleGameObject);
     }
 }

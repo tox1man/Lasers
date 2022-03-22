@@ -66,8 +66,8 @@ public class LevelController
     }
     public TileObjectView GetRandomTile()
     {
-        TileObjectView[] arr = new TileObjectView[_root._level.Tiles.Values.Count];
-        _root._level.Tiles.Values.CopyTo(arr, 0);
+        TileObjectView[] arr = new TileObjectView[_root.Level.Tiles.Values.Count];
+        _root.Level.Tiles.Values.CopyTo(arr, 0);
         return arr[Random.Range(0, arr.Length)];
     }
     public TileObjectView[] GetOuterTiles()
