@@ -74,6 +74,11 @@ public static class Parameters
     {
         return GetRoot().Level;
     }
+
+    public static StageData GetStage()
+    {
+        return GetRoot().CurrentStage;
+    }
     public static LaserColor GetRandomLaserColor()
     {
         return LaserColors.ColorsList[UnityEngine.Random.Range(0, LaserColors.ColorsList.Length)];
@@ -148,5 +153,11 @@ public static class Parameters
             colorNames[i] = LaserColors.ColorsList[i].Name;
         }
         return colorNames;
+    }
+    public static string GetProjectName()
+    {
+        string[] s = Application.dataPath.Split('/');
+        string projectName = s[s.Length - 2];
+        return projectName;
     }
 }

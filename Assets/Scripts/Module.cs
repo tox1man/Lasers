@@ -2,31 +2,38 @@
 using static Parameters;
 public class Module : IUpdatable
 {
-    public ModuleObjectView View { get;  private set; }
+    public ModuleObjectView View;
     private GameObject _moduleGameObject;
 
     public Module(ModuleObjectView view, out GameObject _moduleGameObject)
     {
         View = view;
-        _moduleGameObject = CreateModuleGameobject(View.Transform.position);
+        _moduleGameObject = CreateModuleGameobject();
 
         switch (View.Type)
         {
             case ModuleType.Absorber:
+                View.TargetColor = view.TargetColor;
                 break;
             case ModuleType.Disperser:
-                CreateLaser(false, Direction.East, LaserColors.White);
-                CreateLaser(false, Direction.East, LaserColors.White);
-                CreateLaser(false, Direction.East, LaserColors.White);
+                CreateLaser(false, Direction.North, LaserColors.White);
+                CreateLaser(false, Direction.North, LaserColors.White);
+                CreateLaser(false, Direction.North, LaserColors.White);
                 break;
             case ModuleType.Reflector:
                 break;
             case ModuleType.Emitter:
-                CreateLaser(true, GetRandomLaserDirection(), GetRandomLaserColor()); //RANDOM DIR AND COLOR!
+                View.LaserColors = view.LaserColors;
+                View.LaserDirection = view.LaserDirection;
+                if (View.LaserColors == null || View.LaserColors.Count == 0) 
+                {
+                    View.LaserColors = new System.Collections.Generic.List<LaserColor>();
+                    View.LaserColors.Add(LaserColors.White);
+                }
+                CreateLaser(true, View.LaserDirection, View.LaserColors[0]);
                 break;
         }
-    }
-        
+    } 
     public void Update()
     {
         if (!View || !View.IsActive) return;
@@ -68,11 +75,17 @@ public class Module : IUpdatable
         View = null;
         GameObject.Destroy(_moduleGameObject);
     }
-    private GameObject CreateModuleGameobject(Vector3 pos)
+    private GameObject CreateModuleGameobject()
     {
-        _moduleGameObject = GameObject.Instantiate(View.ObjectPrefab, pos, Quaternion.identity);
+        _moduleGameObject = GameObject.Instantiate(View.ObjectPrefab, View.Transform.position, Quaternion.identity);
+
+        float scaleValue = GetStage().Level.GridSize;
+        Vector3 moduleScale = new Vector3(scaleValue/2 * View.Transform.localScale.x, 
+                                    scaleValue/2 * View.Transform.localScale.y, 
+                                    scaleValue/2 * View.Transform.localScale.z);
+        _moduleGameObject.transform.localScale = moduleScale;
         _moduleGameObject.transform.Translate(Vector2.up * LEVEL_TILE_HEIGHT / 2);
-        _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y);
+        _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y / 2);
 
         View = _moduleGameObject.GetComponent<ModuleObjectView>();
 

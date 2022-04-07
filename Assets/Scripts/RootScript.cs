@@ -2,21 +2,19 @@
 
 public class RootScript : MonoBehaviour
 {
-    [Header("View components")]
-    [SerializeField] public ModuleObjectView[] _moduleViews;
 
-    [Header("Level")]
+    [Header("View components")]
+    //ORDER OF MODULES MATTERS!
+    public ModuleObjectView[] ModuleViews;
+    [Header("Stage Settings")]
     [SerializeField] public GameObject FloorTilePrefab;
-    [SerializeField] public Vector2Int LevelSize;
-    [SerializeField] [Range(1, 5)] public int GridSize = 2;
-    [SerializeField] [Range(0f, 1f)] public float OffsetSize = 0.1f;
-    [SerializeField] public Parameters.WaveMode AnimationMode;
+    public bool EncryptSaveFiles;
+    [SerializeField] public StageData CurrentStage;
 
     public LevelController Level;
     public GoalController GoalController;
-    public StageConfigurator StageConfig;
     private MainController _mainController;
-    /*[HideInInspector]*/ public int[] ModuleAmounts;
+    private SaveController _saveController;
      
     float deltaTime = 0.0f;
 
@@ -30,6 +28,8 @@ public class RootScript : MonoBehaviour
     {
         gameObject.name = Parameters.ROOT_OBJECT_NAME;
 
+        _saveController = new SaveController();
+
         Level = new LevelController();
         Level.Start();
 
@@ -38,9 +38,10 @@ public class RootScript : MonoBehaviour
     }
     public void Update()
     {
+        deltaTime = Time.deltaTime;
+
         Level.Update();
         _mainController.Update();
-        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
     }
     public void FixedUpdate()
     {

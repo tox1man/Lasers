@@ -5,13 +5,16 @@ using static Parameters;
 public class LevelController
 {
     private RootScript _root;
+    private StageData _stage;
     public Dictionary<Vector2Int, TileObjectView> Tiles { get; private set; }
     private GameObject _level;
     public void Start()
     {
         _root = GetRoot();
+        _stage = _root.CurrentStage;
+
         Tiles = new Dictionary<Vector2Int, TileObjectView>();
-        BuildLevel(new Vector2Int(_root.LevelSize.x, _root.LevelSize.y), _root.GridSize, _root.OffsetSize);
+        BuildLevel(new Vector2Int(_stage.Level.LevelSize.x, _stage.Level.LevelSize.y), _stage.Level.GridSize, _stage.Level.OffsetSize);
         ColorTiles(GetOuterTiles(), Color.blue);
     }
     public void Update()
@@ -22,7 +25,7 @@ public class LevelController
             tile.Phase += Time.deltaTime;
             if (tile.DoAnimate)  
             {
-                AnimateTile(tile, tile.Frequency, tile.WaveAmplitude, tile.Phase, CalculatePhase(tile, _root.AnimationMode));
+                AnimateTile(tile, tile.Frequency, tile.WaveAmplitude, tile.Phase, CalculatePhase(tile, _stage.Level.AnimationMode));
             }
         }
     }
@@ -72,7 +75,7 @@ public class LevelController
     }
     public TileObjectView[] GetOuterTiles()
     {
-        Vector2Int mapSize = _root.LevelSize / _root.GridSize;
+        Vector2Int mapSize = _stage.Level.LevelSize / _stage.Level.GridSize;
         TileObjectView[] outerTiles = new TileObjectView[(mapSize.x + mapSize.y) * 2 - 4]; // number of outer tiles is perimeter minus 4 corners.
         int index = 0;
         foreach (TileObjectView tile in Tiles.Values)

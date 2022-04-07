@@ -9,11 +9,32 @@ public class ModuleObjectView : GameObjectView
     public GameObject laserPrefab;
     public Renderer Renderer;
 
-    public List<Laser> Lasers = new List<Laser>();
-    [HideInInspector] public List<Color> InputColors = new List<Color>();   // Displayed in Editor only for Absorber and Disperser
-    [HideInInspector] public LaserColor TargetColor = LaserColors.White;    // Displayed in Editor only for Absorber
-    [HideInInspector] public Direction LaserDirection;                      // Displayed in Editor only for Emitter
+    public List<Laser> Lasers;
+    public List<LaserColor> LaserColors;
+    [HideInInspector] public List<Color> InputColors = new List<Color>();                // Displayed in Editor only for Absorber and Disperser
+    [HideInInspector] public LaserColor TargetColor = Parameters.LaserColors.White;      // Displayed in Editor only for Absorber
+    [HideInInspector] public Direction LaserDirection = Direction.North;                 // Displayed in Editor only for Emitter
 
+    public void SetDefault()
+    {
+        Tile.Set(0, 0);
+        Move(Tile);
+        LaserColors = new List<LaserColor>();
+        TargetColor = Parameters.LaserColors.White;
+        LaserDirection = Direction.North;
+    }
+    public void GetViewFromStageModule(StageData.Module module)
+    {
+        Tile = module.Tile;
+        Type = module.Type;
+        TargetColor = Parameters.LaserColors.ColorsList[module.TargetColorIndex];
+        LaserDirection = module.LaserDirection;
+        LaserColors = new List<LaserColor>();
+        foreach (int index in module.LaserColorsIndecies)
+        {
+            LaserColors.Add(Parameters.LaserColors.ColorsList[index]);
+        }
+    }
     public void TryAddColor(Color other)
     {
         if (!InputColors.Contains(other)) InputColors.Add(other);

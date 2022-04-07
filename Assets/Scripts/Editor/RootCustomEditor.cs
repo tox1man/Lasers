@@ -1,51 +1,72 @@
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUILayout;
+using static UnityEditor.EditorGUI;
 using static ModuleGUILayout;
 using static Parameters;
-using System.Collections.Generic;
 
 [CustomEditor(typeof(RootScript))]
 public class RootCustomEditor : Editor
 {
-    RootScript rootScript;
-    ModuleObjectView[] views;
-    bool[] foldoutsState;
+    private RootScript _rootScript;
+    private StageData _stage;
+    private ModuleObjectView[] _views;
+    private bool[] _foldoutsState;
 
     public void OnEnable()
     {
-        rootScript = GetRoot();
-        views = rootScript._moduleViews;
-        foldoutsState = new bool[views.Length];
+        _rootScript = GetRoot();
+        _stage = _rootScript.CurrentStage;
+        _views = _rootScript.ModuleViews;
+        _foldoutsState = new bool[_views.Length];
     }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-
-        Space();
-        LabelField("Gameplay", EditorStyles.boldLabel);
-
-        for (int i = 0; i < views.Length; i++)
+        Space(10);
+        LabelField("Modules settings", EditorStyles.boldLabel);
+        for (int i = 0; i < _views.Length; i++)
         {
-            if (rootScript.ModuleAmounts == null || views[i] == null )
+            if (_stage.ModuleAmounts == null || _views[i] == null )
             {
                 Debug.LogError("Some of ModuleObjectView elements hasn't been assigned.");
                 continue;
             }
 
-            int moduleAmount = rootScript.ModuleAmounts[i];
+            int moduleAmount = 0;
+            try { moduleAmount = _stage.ModuleAmounts[i]; }
+            catch { Debug.LogError("Module amount index is out of range."); }
 
             BeginVertical();
-                DisplayModulesParameters(views[i].Type, i, moduleAmount);
+                DisplayModulesParameters(_views[i].Type, i, moduleAmount);
             EndVertical();
         }
+        LabelField("");
+        SaveStageButton();
     }
-    private void StageSettings()
+    private void SaveStageButton()
     {
-        Dictionary<ModuleType, int> dict = new Dictionary<ModuleType, int>();
-        
-
+        BeginHorizontal();
+        if (GUILayout.Button("Save stage"))
+        {
+            SaveController.instance = new SaveController();
+            SaveController.instance.SaveStage();
+        }
+        if (GUILayout.Button("Load stage"))
+        {
+            SaveController.instance = new SaveController();
+            SaveController.instance.LoadStage();
+        }
+        EndHorizontal();
+        if (GUILayout.Button("Load Default stage"))
+        {
+            _rootScript.CurrentStage.SetDefault();
+        }
+        if (GUILayout.Button("Open save folder"))
+        {
+            System.Diagnostics.Process.Start($"{Application.persistentDataPath}/");
+        }
     }
     private void CreateModuleButtons(int i, int moduleAmount)
     {
@@ -53,23 +74,23 @@ public class RootCustomEditor : Editor
         BeginHorizontal();
         if (GUILayout.Button("+"))
         {
-            if (moduleAmount < 20) rootScript.OnModuleAmountChange(i, true);
+            if (moduleAmount < 20) _rootScript.OnModuleAmountChange(i, true);
             moduleAmount = Mathf.Clamp(moduleAmount + 1, 0, 20);
-            rootScript.ModuleAmounts[i] = moduleAmount;
+            _stage.ModuleAmounts[i] = moduleAmount;
         }
         else if (GUILayout.Button("-"))
         {
-            if (moduleAmount > 0) rootScript.OnModuleAmountChange(i, false);
+            if (moduleAmount > 0) _rootScript.OnModuleAmountChange(i, false);
             moduleAmount = Mathf.Clamp(moduleAmount - 1, 0, 20);
-            rootScript.ModuleAmounts[i] = moduleAmount;
+            _stage.ModuleAmounts[i] = moduleAmount;
         }
         EndHorizontal();
     }
     private void DisplayModulesParameters(ModuleType type, int moduleIndex, int amount)
     {
-        string foldoutLabel = $"{type}s Settings";
+        string foldoutLabel = $"{type}s ({_stage.ModuleAmounts[moduleIndex]})";
         string moduleLabel;
-        if (foldoutsState[moduleIndex] = Foldout(foldoutsState[moduleIndex], foldoutLabel))
+        if (_foldoutsState[moduleIndex] = Foldout(_foldoutsState[moduleIndex], foldoutLabel))
         {
             CreateModuleButtons(moduleIndex, amount);
         
@@ -79,34 +100,35 @@ public class RootCustomEditor : Editor
                     for (int i = 0; i < amount; i++)
                     {
                         moduleLabel = $"{type} {i + 1}";
+                        LabelField(moduleLabel);
                         BeginHorizontal();
-                            Toggle(true);
-                            LabelField($"{moduleLabel} color");
-                            EditorGUI.BeginChangeCheck();
-                            try { DisplayAbsorberTargetColor(GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>()); }
-                            catch { LabelField("Avaliable in Play."); }
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                Debug.Log($"{moduleLabel} changed");
-                            }
-                        EndHorizontal();
+                        try 
+                        { 
+                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                            DisplayAbsorberTargetColor(module);
+                            DisplayPosition(module);
+                            EndHorizontal();
+                        }
+                        catch 
+                        {
+                            LabelField("Avaliable in Play."); 
+                            EndHorizontal();
+                        }
                     }
                     break;
                 case ModuleType.Disperser:
                     for (int i = 0; i < amount; i++)
                     {
                         moduleLabel = $"{type} {i + 1}";
-                        EditorGUI.BeginChangeCheck();
+                        LabelField(moduleLabel);
                         try
                         {
-                            BeginHorizontal();
-                            LabelField(moduleLabel);
-                            EndHorizontal();
+                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                            DisplayPosition(module);
                         }
-                        catch { LabelField("Avaliable in Play."); }
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            Debug.Log($"{moduleLabel} changed");
+                        catch 
+                        { 
+                            LabelField("Avaliable in Play."); 
                         }
                     }
                     break;
@@ -114,22 +136,22 @@ public class RootCustomEditor : Editor
                     for (int i = 0; i < amount; i++)
                     {
                         moduleLabel = $"{type} {i + 1}";
-                        EditorGUI.BeginChangeCheck();
+                        LabelField($"{moduleLabel}");
+                        BeginHorizontal();
                         try 
                         {
-                            BeginHorizontal();
-                                LabelField($"{moduleLabel} color");
-                                DisplayLaserColors(GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>());
+                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                                DisplayLaserDirection(module);
+                                DisplayLaserColors(module);
                             EndHorizontal();
                             BeginHorizontal();
-                                LabelField($"{moduleLabel} direction");
-                                DisplayLaserDirection(GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>());
+                                DisplayPosition(module);
                             EndHorizontal();
                         }
-                        catch { LabelField("Avaliable in Play."); EndHorizontal(); }
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            Debug.Log($"{moduleLabel} changed");
+                        catch 
+                        { 
+                            LabelField("Avaliable in Play."); 
+                            EndHorizontal(); 
                         }
                     }
                     break;
@@ -137,17 +159,15 @@ public class RootCustomEditor : Editor
                     for (int i = 0; i < amount; i++)
                     {
                         moduleLabel = $"{type} {i + 1}";
-                        EditorGUI.BeginChangeCheck();
+                        LabelField(moduleLabel);
                         try
                         {
-                            BeginHorizontal();
-                            LabelField(moduleLabel);
-                            EndHorizontal();
+                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                            DisplayPosition(module);
                         }
-                        catch { LabelField("Avaliable in Play."); }
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            Debug.Log("reflector changed");
+                        catch 
+                        { 
+                            LabelField("Avaliable in Play."); 
                         }
                     }
                     break;
