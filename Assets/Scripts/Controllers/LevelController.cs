@@ -59,13 +59,13 @@ public class LevelController
         
         Tiles.Add(coord, tileView);
     }
-    public void ElevateTile(Vector2Int tileCoordinates, float elevation) 
+    public void ElevateTile(Vector2Int tileCoordinates, bool elevate) 
     {
-        Tiles[tileCoordinates].Elevation = elevation;
+        Tiles[tileCoordinates].Elevated = elevate;
     }
-    public void ElevateTile(int tileX, int tileY, float elevation) 
+    public void ElevateTile(int tileX, int tileY, bool elevate) 
     {
-        ElevateTile(new Vector2Int(tileX, tileY), elevation);
+        ElevateTile(new Vector2Int(tileX, tileY), elevate);
     }
     public TileObjectView GetRandomTile()
     {
@@ -110,7 +110,7 @@ public class LevelController
     private void AnimateTile(TileObjectView tile, float frequency, float amplitude, float offset, float phase)
     {
             float value = Mathf.Sin((offset + phase) * frequency) * amplitude;
-            var newPos = new Vector3(tile.Transform.position.x, /*tile.Elevation +*/ value, tile.Transform.position.z);
+            var newPos = new Vector3(tile.Transform.position.x, tile.Elevation + value, tile.Transform.position.z);
             tile.Transform.position = newPos;
     }
     /// <summary>

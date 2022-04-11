@@ -84,7 +84,6 @@ public class Module : IUpdatable
                                     scaleValue/2 * View.Transform.localScale.y, 
                                     scaleValue/2 * View.Transform.localScale.z);
         _moduleGameObject.transform.localScale = moduleScale;
-        _moduleGameObject.transform.Translate(Vector2.up * LEVEL_TILE_HEIGHT / 2);
         _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y / 2);
 
         View = _moduleGameObject.GetComponent<ModuleObjectView>();

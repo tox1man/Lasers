@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Parameters;
@@ -38,37 +39,48 @@ public class Laser : MonoBehaviour
         {
             if (Physics.Raycast(new Ray(startPoint, direction), out hit, distance))
             {
-                ModuleObjectView other = hit.collider.gameObject.GetComponentInParent<ModuleObjectView>();
-                if (other == null) return;
-
-                laserPoints.Add(hit.point);
-
-                switch (other.Type)
+                GameObjectView hitObjectView;
+                if (hit.collider.gameObject.TryGetComponent<GameObjectView>(out hitObjectView))
                 {
-                    case ModuleType.Absorber: // absorb laser
-                        Absorb(other, LaserColor.Color);
-                        break;
-                    case ModuleType.Emitter: // absorb laser
-                        Absorb();
-                        break;
-                    case ModuleType.Reflector: // reflect laser around normal
-                        Reflect(direction, hit, distance, laserPoints);
-                        break;
-                    case ModuleType.Disperser: // cast new lasers
-                        if (other == View) break;
-                        Disperse(other, hit, distance);
-                        break;
-                    default:
-                        Debug.LogWarning($"Unknown module type. {this}.{nameof(Shoot)}");
-                        break;
+                    laserPoints.Add(hit.point);
+                    switch (hitObjectView)
+                    {
+                        case ModuleObjectView module:
+                            if (module == null) return;
+                            switch (module.Type)
+                            {
+                                case ModuleType.Absorber: // absorb laser
+                                    Absorb(module, LaserColor.Color);
+                                    break;
+                                case ModuleType.Emitter: // absorb laser
+                                    Absorb();
+                                    break;
+                                case ModuleType.Reflector: // reflect laser around normal
+                                    Reflect(direction, hit, distance, laserPoints);
+                                    break;
+                                case ModuleType.Disperser: // cast new lasers
+                                    if (module == View) break;
+                                    Disperse(module, hit, distance);
+                                    break;
+                                default:
+                                    Debug.LogWarning($"Unknown module type. {this}.{nameof(Shoot)}");
+                                    break;
 
+                            }
+                            break;
+                        case TileObjectView tile:
+                            Absorb();
+                            break;
+                        default:
+                            Absorb();
+                            break;
+                    }
                 }
             }
             else laserPoints.Add(direction.normalized * 50f + startPoint);
         }
         RenderLaser(laserPoints.ToArray());
     }
-
     /// <summary>
     /// Reflects laser off the surface.
     /// </summary>

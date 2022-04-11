@@ -167,7 +167,7 @@ MonoBehaviour:
     Level:
       GridSize: 1
       OffsetSize: 0
-      LevelSize: {x: 7, y: 3}
+      LevelSize: {x: 12, y: 12}
       AnimationMode: 3
     ModuleAmounts: 01000000000000000100000000000000
     Modules:

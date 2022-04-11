@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUILayout;
@@ -8,43 +9,75 @@ using static Parameters;
 [CustomEditor(typeof(RootScript))]
 public class RootCustomEditor : Editor
 {
-    private RootScript _rootScript;
-    private StageData _stage;
-    private ModuleObjectView[] _views;
-    private bool[] _foldoutsState;
+    private RootScript rootScript;
+    private StageData stage;
+    private ModuleObjectView[] views;
+    private bool[] foldoutsState;
+    private bool levelMakerFoldoutState = true;
 
     public void OnEnable()
     {
-        _rootScript = GetRoot();
-        _stage = _rootScript.CurrentStage;
-        _views = _rootScript.ModuleViews;
-        _foldoutsState = new bool[_views.Length];
+        rootScript = GetRoot();
+        stage = rootScript.CurrentStage;
+        views = rootScript.ModuleViews;
+        foldoutsState = new bool[views.Length];
     }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        Space(10);
-        LabelField("Modules settings", EditorStyles.boldLabel);
-        for (int i = 0; i < _views.Length; i++)
+
+        if (levelMakerFoldoutState = Foldout(levelMakerFoldoutState, "Wall Maker"))
         {
-            if (_stage.ModuleAmounts == null || _views[i] == null )
+            DisplayLevelMaker();
+        }
+
+        LabelField("Modules settings", EditorStyles.boldLabel);
+        for (int i = 0; i < views.Length; i++)
+        {
+            if (stage.ModuleAmounts == null || views[i] == null)
             {
                 Debug.LogError("Some of ModuleObjectView elements hasn't been assigned.");
                 continue;
             }
-
             int moduleAmount = 0;
-            try { moduleAmount = _stage.ModuleAmounts[i]; }
+            try { moduleAmount = stage.ModuleAmounts[i]; }
             catch { Debug.LogError("Module amount index is out of range."); }
 
             BeginVertical();
-                DisplayModulesParameters(_views[i].Type, i, moduleAmount);
+            DisplayModulesParameters(views[i].Type, i, moduleAmount);
             EndVertical();
         }
         LabelField("");
         SaveStageButton();
     }
+
+    private void DisplayLevelMaker()
+    {
+        for (int i = stage.Level.LevelSize.y - 1; i >= 0; i--)
+        {
+            BeginHorizontal();
+            for (int j = 0; j < stage.Level.LevelSize.x; j++)
+            {
+                try
+                {
+                    Texture tex = rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated ? Resources.Load<Texture>("Button.svg") : null;
+                    if (GUILayout.Button(tex, GUILayout.Width(30), GUILayout.Height(30)))
+                    {
+                        rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated = !rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated;
+                    }
+                }
+                catch 
+                {
+                    GUI.enabled = false;
+                    GUILayout.Button("", GUILayout.Width(30), GUILayout.Height(30));
+                    GUI.enabled = true;
+                }
+            }
+            EndHorizontal();
+        }
+    }
+
     private void SaveStageButton()
     {
         BeginHorizontal();
@@ -61,7 +94,7 @@ public class RootCustomEditor : Editor
         EndHorizontal();
         if (GUILayout.Button("Load Default stage"))
         {
-            _rootScript.CurrentStage.SetDefault();
+            rootScript.CurrentStage.SetDefault();
         }
         if (GUILayout.Button("Open save folder"))
         {
@@ -74,23 +107,23 @@ public class RootCustomEditor : Editor
         BeginHorizontal();
         if (GUILayout.Button("+"))
         {
-            if (moduleAmount < 20) _rootScript.OnModuleAmountChange(i, true);
+            if (moduleAmount < 20) rootScript.OnModuleAmountChange(i, true);
             moduleAmount = Mathf.Clamp(moduleAmount + 1, 0, 20);
-            _stage.ModuleAmounts[i] = moduleAmount;
+            stage.ModuleAmounts[i] = moduleAmount;
         }
         else if (GUILayout.Button("-"))
         {
-            if (moduleAmount > 0) _rootScript.OnModuleAmountChange(i, false);
+            if (moduleAmount > 0) rootScript.OnModuleAmountChange(i, false);
             moduleAmount = Mathf.Clamp(moduleAmount - 1, 0, 20);
-            _stage.ModuleAmounts[i] = moduleAmount;
+            stage.ModuleAmounts[i] = moduleAmount;
         }
         EndHorizontal();
     }
     private void DisplayModulesParameters(ModuleType type, int moduleIndex, int amount)
     {
-        string foldoutLabel = $"{type}s ({_stage.ModuleAmounts[moduleIndex]})";
+        string foldoutLabel = $"{type}s ({stage.ModuleAmounts[moduleIndex]})";
         string moduleLabel;
-        if (_foldoutsState[moduleIndex] = Foldout(_foldoutsState[moduleIndex], foldoutLabel))
+        if (foldoutsState[moduleIndex] = Foldout(foldoutsState[moduleIndex], foldoutLabel))
         {
             CreateModuleButtons(moduleIndex, amount);
         
