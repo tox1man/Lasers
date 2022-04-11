@@ -153,18 +153,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f132333681088243b952a2165abab48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moduleViews:
+  ModuleViews:
   - {fileID: -2885328388264487899, guid: 4b89c544cd6c2924a9d3fabd0d62724e, type: 3}
   - {fileID: 8271857023909370046, guid: 01e9413d837fe0f42ad9433bf6be8ae0, type: 3}
   - {fileID: 8271857023909370046, guid: ac086eb2f06809447810a0f5c832e185, type: 3}
   - {fileID: 8271857023909370046, guid: be52ec29d5fba1942b0cf386db05ec97, type: 3}
   FloorTilePrefab: {fileID: 4661359061998251971, guid: 6d4445d934cad39458ebbbb6666f01a6,
     type: 3}
-  LevelSize: {x: 30, y: 30}
-  GridSize: 2
-  OffsetSize: 0.2
-  AnimationMode: 0
-  ModuleAmounts: 03000000030000000300000003000000
+  EncryptSaveFiles: 0
+  CurrentStage:
+    Name: Stage 1
+    Rewrite: 1
+    Level:
+      GridSize: 1
+      OffsetSize: 0
+      LevelSize: {x: 12, y: 12}
+      AnimationMode: 3
+    ModuleAmounts: 01000000000000000100000000000000
+    Modules:
+    - Tile: {x: 5, y: 1}
+      Type: 0
+      LaserColorsIndecies: 
+      TargetColorIndex: 2
+      LaserDirection: 0
+    - Tile: {x: 1, y: 1}
+      Type: 1
+      LaserColorsIndecies: 02000000
+      TargetColorIndex: 4
+      LaserDirection: 0
 --- !u!4 &17019996
 Transform:
   m_ObjectHideFlags: 0
@@ -173,7 +189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17019994}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.32, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

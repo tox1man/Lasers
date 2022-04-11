@@ -16,7 +16,7 @@ public class MainController
     public void Start()
     {
         _root = GetRoot();
-        _moduleViews = _root.GetComponent<RootScript>()._moduleViews;
+        _moduleViews = _root.GetComponent<RootScript>().ModuleViews;
 
         _controllersUpdatable = new List<IUpdatable>();
         _controllersFixedUpdatable = new List<IFixedUpdatable>();
@@ -41,15 +41,18 @@ public class MainController
 
     private void LoadControllers()
     {
-        _inputController = new InputController();
-        AddController(_inputController);
+        // TODO - USE SINGLETONS LIKE IN SAVECONTROLLER?
 
-        _moduleController = new ModuleController(_moduleViews);
+        //_inputController = new InputController();
+        //AddController(_inputController);
+
+        _moduleController = new ModuleController();
         AddController(_moduleController);
 
         _goalController = new GoalController();
         _root.GoalController = _goalController;
         AddController(_goalController);
+
     }
 
     private void UpdateControllers()

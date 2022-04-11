@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Parameters;
@@ -7,9 +8,9 @@ public class Laser : MonoBehaviour
 {
     public ModuleObjectView View;
     public LaserColor LaserColor { get; set; }
-    public Vector3 Direction;
-    public LineRenderer Line;
-    public bool ToggleFromEditor;
+    public Vector3 Direction { get; set; } 
+    public LineRenderer Line { get; set; }
+    public bool ToggleFromEditor { get; set; }
 
     /// <summary>
     /// Shoots laser. If it hits object - interacts with it.
@@ -38,37 +39,48 @@ public class Laser : MonoBehaviour
         {
             if (Physics.Raycast(new Ray(startPoint, direction), out hit, distance))
             {
-                ModuleObjectView other = hit.collider.gameObject.GetComponentInParent<ModuleObjectView>();
-                if (other == null) return;
-
-                laserPoints.Add(hit.point);
-
-                switch (other.Type)
+                GameObjectView hitObjectView;
+                if (hit.collider.gameObject.TryGetComponent<GameObjectView>(out hitObjectView))
                 {
-                    case ModuleType.Absorber: // absorb laser
-                        Absorb(other, LaserColor.Color);
-                        break;
-                    case ModuleType.Emitter: // absorb laser
-                        Absorb();
-                        break;
-                    case ModuleType.Reflector: // reflect laser around normal
-                        Reflect(direction, hit, distance, laserPoints);
-                        break;
-                    case ModuleType.Disperser: // cast new lasers
-                        if (other == View) break;
-                        Disperse(other, hit, distance);
-                        break;
-                    default:
-                        Debug.LogWarning($"Unknown module type. {this}.{nameof(Shoot)}");
-                        break;
+                    laserPoints.Add(hit.point);
+                    switch (hitObjectView)
+                    {
+                        case ModuleObjectView module:
+                            if (module == null) return;
+                            switch (module.Type)
+                            {
+                                case ModuleType.Absorber: // absorb laser
+                                    Absorb(module, LaserColor.Color);
+                                    break;
+                                case ModuleType.Emitter: // absorb laser
+                                    Absorb();
+                                    break;
+                                case ModuleType.Reflector: // reflect laser around normal
+                                    Reflect(direction, hit, distance, laserPoints);
+                                    break;
+                                case ModuleType.Disperser: // cast new lasers
+                                    if (module == View) break;
+                                    Disperse(module, hit, distance);
+                                    break;
+                                default:
+                                    Debug.LogWarning($"Unknown module type. {this}.{nameof(Shoot)}");
+                                    break;
 
+                            }
+                            break;
+                        case TileObjectView tile:
+                            Absorb();
+                            break;
+                        default:
+                            Absorb();
+                            break;
+                    }
                 }
             }
             else laserPoints.Add(direction.normalized * 50f + startPoint);
         }
         RenderLaser(laserPoints.ToArray());
     }
-
     /// <summary>
     /// Reflects laser off the surface.
     /// </summary>
@@ -81,7 +93,6 @@ public class Laser : MonoBehaviour
         direction = Vector3.Reflect(direction, hit.normal);
         Shoot(direction, distance, laserPoints);
     }
-
     /// <summary>
     /// Disperses laser on the opposite side of the object. If laser is White - decomposes it in R,G,B.
     /// Otherwise preserve original color.
@@ -91,7 +102,6 @@ public class Laser : MonoBehaviour
     /// <param name="distance">Maximum laser lenght.</param>
     private void Disperse(ModuleObjectView other, RaycastHit hit, float distance) 
     {
-        
         if (hit.collider.gameObject.transform.parent.name == "Faces" && !other.Lasers[1].enabled) // SOME LASERS UPDATE FIRST THAN OTHERS
         {
             Vector3 forwardDirection = -hit.normal;
@@ -114,8 +124,8 @@ public class Laser : MonoBehaviour
             }
             else
             {
-                other.ToggleLaserFromEditor(other.Lasers[1], true);
                 other.Lasers[1].LaserColor = LaserColor;
+                other.ToggleLaserFromEditor(other.Lasers[1], true);
                 other.Lasers[1].Shoot(forwardDirection, distance);
             }
 
@@ -125,7 +135,6 @@ public class Laser : MonoBehaviour
             Absorb();
         }
     }
-
     /// <summary>
     /// Absorbs laser without color change to the object. 
     /// Not implemented for now.
@@ -134,7 +143,6 @@ public class Laser : MonoBehaviour
     {
         // ABROBS LASER
     }
-
     /// <summary>
     /// Absorbs laser and change objects color to that of a lasers.
     /// </summary>
@@ -143,8 +151,7 @@ public class Laser : MonoBehaviour
     private void Absorb(ModuleObjectView other, Color color)
     {
         other.TryAddColor(color);
-    }    
-
+    }
     /// <summary>
     /// Traces laser path with LineRenderer component.
     /// </summary>
@@ -153,9 +160,10 @@ public class Laser : MonoBehaviour
     {
         if (Line != null)
         {
+            Line.startWidth = Mathf.Min(View.Transform.localScale.x / 3, View.Transform.localScale.y / 3, View.Transform.localScale.z / 3);
             Line.positionCount = points.Length;
             Line.SetPositions(points);
-            Line.endWidth = Line.startWidth / 2;
+            Line.endWidth = Line.startWidth;
             Line.material.color = LaserColor.Color;
         }
     }

@@ -9,7 +9,7 @@ public static class ModuleGUILayout
     {
         for (int i = 0; i < myScript.Lasers.Count; i++)
         {
-            int ColorIndex = Array.IndexOf(LaserColors.ColorsList, myScript.Lasers[i].LaserColor);
+            int ColorIndex =  Array.IndexOf(LaserColors.ColorsList, myScript.Lasers[i].LaserColor);
             BeginHorizontal();
                 myScript.ToggleLaserFromEditor(myScript.Lasers[i], GUILayout.Toggle(myScript.Lasers[i].ToggleFromEditor, $"Laser {i}"));
                 myScript.Lasers[i].LaserColor = LaserColors.ColorsList[Popup(ColorIndex, GetColorNamesArray())];
@@ -43,22 +43,23 @@ public static class ModuleGUILayout
     {
         Foldout(true, "Input colors");
         BeginVertical();
-        for (int i = 0; i < myScript.InputColors.Count; i++)
-        {
-            GUI.enabled = false;
-            BeginHorizontal();
-            LabelField($"Input color #{i}");
-            ColorField(myScript.InputColors[i]);
-            EndHorizontal();
-            GUI.enabled = true;
-        }
+            foreach (Color color in myScript.InputColors)
+            {
+                GUI.enabled = false;
+                BeginHorizontal();
+                LabelField($"Input color #{myScript.InputColors.IndexOf(color)}");
+                ColorField(color);
+                EndHorizontal();
+                GUI.enabled = true;
+            }
         EndVertical();
     }
     public static void DisplayTargetColor(ModuleObjectView myScript)
     {
         LabelField("Target Color");
         BeginVertical();
-            int ColorIndex = Array.IndexOf(LaserColors.ColorsList, myScript.TargetColor);
+            int index = Array.IndexOf(LaserColors.ColorsList, myScript.TargetColor);
+            int ColorIndex = index;// == -1 ? 4: index;
             BeginHorizontal();
                 myScript.TargetColor = LaserColors.ColorsList[Popup(ColorIndex, GetColorNamesArray())];
                 GUI.enabled = false;
@@ -69,10 +70,18 @@ public static class ModuleGUILayout
     }
     public static void DisplayAbsorberTargetColor(ModuleObjectView myScript)
     {
-        int ColorIndex = Array.IndexOf(LaserColors.ColorsList, myScript.TargetColor);
-        myScript.TargetColor = LaserColors.ColorsList[Popup(ColorIndex, GetColorNamesArray())];
+        int colorIndex = Array.IndexOf(LaserColors.ColorsList, myScript.TargetColor);
+        myScript.TargetColor = LaserColors.ColorsList[Popup(colorIndex, GetColorNamesArray())];
         GUI.enabled = false;
-        ColorField(LaserColors.ColorsList[ColorIndex].Color);
+        ColorField(LaserColors.ColorsList[colorIndex].Color);
         GUI.enabled = true;
+    }
+    public static void DisplayPosition(ModuleObjectView myScript)
+    {
+        BeginHorizontal();
+            Vector2Int position = Vector2IntField("", myScript.Tile);
+            Space();
+        EndHorizontal();
+        myScript.Move(position);
     }
 }
