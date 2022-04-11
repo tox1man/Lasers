@@ -6,6 +6,7 @@ public class TileObjectView : GameObjectView
     [Range(0.1f, 10f)] public float Frequency;
     [Range(-32f, 32f)] public float Elevation = 0;
     private bool elevated;
+    private float elevationAmount;
     public bool Elevated 
     { 
         get { return elevated; } 
@@ -17,7 +18,9 @@ public class TileObjectView : GameObjectView
             }
             else
             {
-                Elevation = value ? Elevation + 1f : Elevation - 1f;
+                elevationAmount = Parameters.GetRoot().CurrentStage.Level.GridSize;
+
+                Elevation = value ? Elevation + elevationAmount : Elevation - elevationAmount;
                 elevated = value;
             }
         } 

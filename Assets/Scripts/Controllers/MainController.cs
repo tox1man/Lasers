@@ -8,7 +8,7 @@ public class MainController
     private RootScript _root;
 
     private InputController _inputController;
-    private ModuleController _moduleController;
+    private ModuleController1 _moduleController;
     private GoalController _goalController;
 
     private ModuleObjectView[] _moduleViews;
@@ -46,7 +46,7 @@ public class MainController
         //_inputController = new InputController();
         //AddController(_inputController);
 
-        _moduleController = new ModuleController();
+        _moduleController = new ModuleController1();
         AddController(_moduleController);
 
         _goalController = new GoalController();

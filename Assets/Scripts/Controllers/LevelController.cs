@@ -35,9 +35,9 @@ public class LevelController
         var offset = new Vector2(offsetSize, offsetSize);
         _level = new GameObject(levelName);
 
-        for (int i = 0; i < levelSize.x / gridSize; i++)
+        for (int i = 0; i < levelSize.x; i++)
         {
-            for(int j = 0; j < levelSize.y / gridSize; j++)
+            for(int j = 0; j < levelSize.y; j++)
             {
                 CreateTile(gridSize, i, j, offset);
             }
@@ -75,7 +75,7 @@ public class LevelController
     }
     public TileObjectView[] GetOuterTiles()
     {
-        Vector2Int mapSize = _stage.Level.LevelSize / _stage.Level.GridSize;
+        Vector2Int mapSize = _stage.Level.LevelSize;
         TileObjectView[] outerTiles = new TileObjectView[(mapSize.x + mapSize.y) * 2 - 4]; // number of outer tiles is perimeter minus 4 corners.
         int index = 0;
         foreach (TileObjectView tile in Tiles.Values)

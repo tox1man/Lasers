@@ -165,9 +165,9 @@ MonoBehaviour:
     Name: Stage 1
     Rewrite: 1
     Level:
-      GridSize: 1
+      GridSize: 5
       OffsetSize: 0
-      LevelSize: {x: 12, y: 12}
+      LevelSize: {x: 7, y: 3}
       AnimationMode: 3
     ModuleAmounts: 01000000000000000100000000000000
     Modules:

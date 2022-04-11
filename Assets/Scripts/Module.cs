@@ -80,11 +80,11 @@ public class Module : IUpdatable
         _moduleGameObject = GameObject.Instantiate(View.ObjectPrefab, View.Transform.position, Quaternion.identity);
 
         float scaleValue = GetStage().Level.GridSize;
-        Vector3 moduleScale = new Vector3(scaleValue/2 * View.Transform.localScale.x, 
-                                    scaleValue/2 * View.Transform.localScale.y, 
-                                    scaleValue/2 * View.Transform.localScale.z);
+        Vector3 moduleScale = new Vector3(scaleValue / 2 * View.Transform.localScale.x, 
+                                    scaleValue / 2 * View.Transform.localScale.y, 
+                                    scaleValue / 2 * View.Transform.localScale.z);
         _moduleGameObject.transform.localScale = moduleScale;
-        _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y / 2);
+        _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y);
 
         View = _moduleGameObject.GetComponent<ModuleObjectView>();
 

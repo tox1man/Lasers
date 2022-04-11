@@ -1,0 +1,2 @@
+A:\GeekBrains gamedev\unity git\TopDown shooter\obj\Debug\Assembly-CSharp-Editor.csprojAssemblyReference.cache
+A:\GeekBrains gamedev\unity git\TopDown shooter\obj\Debug\Assembly-CSharp-Editor.csproj.CoreCompileInputs.cache

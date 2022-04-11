@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUILayout;
@@ -22,7 +21,6 @@ public class RootCustomEditor : Editor
         views = rootScript.ModuleViews;
         foldoutsState = new bool[views.Length];
     }
-
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -51,7 +49,6 @@ public class RootCustomEditor : Editor
         LabelField("");
         SaveStageButton();
     }
-
     private void DisplayLevelMaker()
     {
         for (int i = stage.Level.LevelSize.y - 1; i >= 0; i--)
@@ -77,7 +74,6 @@ public class RootCustomEditor : Editor
             EndHorizontal();
         }
     }
-
     private void SaveStageButton()
     {
         BeginHorizontal();

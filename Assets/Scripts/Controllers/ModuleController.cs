@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Parameters;
 
-public class ModuleController : IUpdatable
+public class ModuleController1 : IUpdatable
 {
     private RootScript root;
     private StageData stage;
@@ -10,7 +10,7 @@ public class ModuleController : IUpdatable
     private GameObject[] modulePools;
     private List<Module>[] moduleListsArray;
 
-    public ModuleController()
+    public ModuleController1()
     {
         root = GetRoot();
         stage = root.CurrentStage;

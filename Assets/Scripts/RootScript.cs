@@ -2,7 +2,6 @@
 
 public class RootScript : MonoBehaviour
 {
-
     [Header("View components")]
     //ORDER OF MODULES MATTERS!
     public ModuleObjectView[] ModuleViews;
