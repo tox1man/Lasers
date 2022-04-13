@@ -59,7 +59,7 @@ public static class ModuleGUILayout
         LabelField("Target Color");
         BeginVertical();
             int index = Array.IndexOf(LaserColors.ColorsList, myScript.TargetColor);
-            int ColorIndex = index;// == -1 ? 4: index;
+            int ColorIndex = index;
             BeginHorizontal();
                 myScript.TargetColor = LaserColors.ColorsList[Popup(ColorIndex, GetColorNamesArray())];
                 GUI.enabled = false;

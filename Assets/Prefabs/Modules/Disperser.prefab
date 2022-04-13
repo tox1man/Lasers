@@ -329,7 +329,7 @@ MonoBehaviour:
   Renderer: {fileID: 2966413038792348203}
   Lasers: []
   InputColors: []
-  LaserDirection: 1
+  LaserDirection: 0
 --- !u!1 &3231749134145363206
 GameObject:
   m_ObjectHideFlags: 0

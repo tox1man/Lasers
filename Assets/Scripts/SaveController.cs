@@ -68,8 +68,14 @@ public class SaveController
 
         stageData.Name = root.CurrentStage.Name;
         stageData.Level = root.CurrentStage.Level;
-        stageData.ModuleAmounts = root.CurrentStage.ModuleAmounts;
 
+        stageData.Level.Elevations = new List<bool>(stageData.Level.LevelSize.x * stageData.Level.LevelSize.y);
+        foreach (TileObjectView tile in root.Level.Tiles.Values)
+        {
+            stageData.Level.Elevations.Add(tile.Elevated);
+        }
+
+        stageData.ModuleAmounts = root.CurrentStage.ModuleAmounts;
         root.CurrentStage.Modules = new List<StageData.Module>();
         foreach (ModuleObjectView viewType in root.ModuleViews)
         {
@@ -81,6 +87,7 @@ public class SaveController
             }
         }
         stageData.Modules = root.CurrentStage.Modules;
+
         stageSaver.Save(stageData, root.CurrentStage.Rewrite);
     }
 }

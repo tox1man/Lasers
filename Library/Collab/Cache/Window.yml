@@ -15,13 +15,8 @@ MonoBehaviour:
   SimpleSelectedItems:
     m_Keys:
     - Assets/Scenes/SampleScene.unity
-    - Assets/Scripts/Controllers/SaveController.cs
-    - Assets/Scripts/Controllers/SaveController.cs.meta
-    - Assets/Scripts/SaveController.cs
-    - Assets/Scripts/SaveController.cs.meta
-    - ProjectSettings/UnityConnectSettings.asset
     - 
-    m_Values: 00000000000000
+    m_Values: 0101
   RevisionSummary: 
   ChangesSearchValue: 
   SelectedHistoryRevision: 

@@ -12,8 +12,8 @@ public class RootScript : MonoBehaviour
 
     public LevelController Level;
     public GoalController GoalController;
-    private MainController _mainController;
-    private SaveController _saveController;
+    private MainController mainController;
+    private SaveController saveController;
      
     float deltaTime = 0.0f;
 
@@ -27,28 +27,28 @@ public class RootScript : MonoBehaviour
     {
         gameObject.name = Parameters.ROOT_OBJECT_NAME;
 
-        _saveController = new SaveController();
+        saveController = new SaveController();
 
         Level = new LevelController();
         Level.Start();
 
-        _mainController = new MainController();
-        _mainController.Start();
+        mainController = new MainController();
+        mainController.Start();
     }
     public void Update()
     {
         deltaTime = Time.deltaTime;
 
         Level.Update();
-        _mainController.Update();
+        mainController.Update();
     }
     public void FixedUpdate()
     {
-        _mainController.FixedUpdate();
+        mainController.FixedUpdate();
     }
     public void OnDestroy()
     {
-        _mainController.OnDestroy();
+        mainController.OnDestroy();
     }
     void OnGUI()
     {

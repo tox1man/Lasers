@@ -4,17 +4,17 @@ using static Parameters;
 
 public class LevelController
 {
-    private RootScript _root;
-    private StageData _stage;
+    private RootScript root;
+    private StageData stage;
     public Dictionary<Vector2Int, TileObjectView> Tiles { get; private set; }
-    private GameObject _level;
+    private GameObject level;
     public void Start()
     {
-        _root = GetRoot();
-        _stage = _root.CurrentStage;
+        root = GetRoot();
+        stage = root.CurrentStage;
 
         Tiles = new Dictionary<Vector2Int, TileObjectView>();
-        BuildLevel(new Vector2Int(_stage.Level.LevelSize.x, _stage.Level.LevelSize.y), _stage.Level.GridSize, _stage.Level.OffsetSize);
+        BuildLevel(new Vector2Int(stage.Level.LevelSize.x, stage.Level.LevelSize.y), stage.Level.GridSize, stage.Level.OffsetSize);
         ColorTiles(GetOuterTiles(), Color.blue);
     }
     public void Update()
@@ -25,15 +25,15 @@ public class LevelController
             tile.Phase += Time.deltaTime;
             if (tile.DoAnimate)  
             {
-                AnimateTile(tile, tile.Frequency, tile.WaveAmplitude, tile.Phase, CalculatePhase(tile, _stage.Level.AnimationMode));
+                tile.AnimateTile(CalculatePhase(tile, stage.Level.AnimationMode));
             }
         }
     }
     public void BuildLevel(Vector2Int levelSize, int gridSize, float offsetSize)
     {
-        string levelName = $"{LEVEL_GAMEOBJECT_NAME} {levelSize.x / gridSize}x{levelSize.y / gridSize}";
+        string levelName = $"{LEVEL_GAMEOBJECT_NAME} {levelSize.x}x{levelSize.y}";
         var offset = new Vector2(offsetSize, offsetSize);
-        _level = new GameObject(levelName);
+        level = new GameObject(levelName);
 
         for (int i = 0; i < levelSize.x; i++)
         {
@@ -48,34 +48,33 @@ public class LevelController
         Vector2Int coord = new Vector2Int(xRow, yRow);
         Vector3 pos = new Vector3(xRow * (offset.x + 1), 0f, yRow * (offset.y + 1)) * gridSize;
 
-        var tileObject = GameObject.Instantiate(_root.FloorTilePrefab, pos, Quaternion.identity, _level.transform);
+        var tileObject = GameObject.Instantiate(root.FloorTilePrefab, pos, Quaternion.identity, level.transform);
         tileObject.transform.localScale = new Vector3(gridSize, LEVEL_TILE_HEIGHT, gridSize);
-        tileObject.name = $"{_root.FloorTilePrefab.name} {xRow}.{yRow}";
+        tileObject.name = $"{root.FloorTilePrefab.name} {xRow}.{yRow}";
 
         var tileView = tileObject.GetComponent<TileObjectView>();
         tileView.Coordinates = coord;
         tileView.Transform.position = pos;
         tileView.DoAnimate = true;
+
+        int tileNumber = xRow * stage.Level.LevelSize.y + yRow;
+        if (tileNumber > stage.Level.Elevations.Count-1)
+        {
+            stage.Level.Elevations.Add(false);
+        }
+        tileView.Elevated = stage.Level.Elevations[tileNumber];
         
         Tiles.Add(coord, tileView);
     }
-    public void ElevateTile(Vector2Int tileCoordinates, bool elevate) 
-    {
-        Tiles[tileCoordinates].Elevated = elevate;
-    }
-    public void ElevateTile(int tileX, int tileY, bool elevate) 
-    {
-        ElevateTile(new Vector2Int(tileX, tileY), elevate);
-    }
     public TileObjectView GetRandomTile()
     {
-        TileObjectView[] arr = new TileObjectView[_root.Level.Tiles.Values.Count];
-        _root.Level.Tiles.Values.CopyTo(arr, 0);
+        TileObjectView[] arr = new TileObjectView[root.Level.Tiles.Values.Count];
+        root.Level.Tiles.Values.CopyTo(arr, 0);
         return arr[Random.Range(0, arr.Length)];
     }
     public TileObjectView[] GetOuterTiles()
     {
-        Vector2Int mapSize = _stage.Level.LevelSize;
+        Vector2Int mapSize = stage.Level.LevelSize;
         TileObjectView[] outerTiles = new TileObjectView[(mapSize.x + mapSize.y) * 2 - 4]; // number of outer tiles is perimeter minus 4 corners.
         int index = 0;
         foreach (TileObjectView tile in Tiles.Values)
@@ -100,32 +99,11 @@ public class LevelController
         TileObjectView[] outerTiles = GetOuterTiles();
         return outerTiles[Random.Range(0, outerTiles.Length)];
     }
-    /// <summary>
-    /// Animate tile in sin-wave.
-    /// </summary>
-    /// <param name="frequency"></param>
-    /// <param name="amplitude"></param>
-    /// <param name="offset"></param>
-    /// <param name="phase"></param>
-    private void AnimateTile(TileObjectView tile, float frequency, float amplitude, float offset, float phase)
-    {
-            float value = Mathf.Sin((offset + phase) * frequency) * amplitude;
-            var newPos = new Vector3(tile.Transform.position.x, tile.Elevation + value, tile.Transform.position.z);
-            tile.Transform.position = newPos;
-    }
-    /// <summary>
-    /// Animate tile in sin-wave.
-    /// </summary>
-    /// <param name="parameters">Vector4 with wave parameters. x - frequency, y - amplitude, z - offset, w - phase.</param>
-    private void AnimateTile(TileObjectView tile, Vector4 parameters)
-    {
-        AnimateTile(tile, parameters.x, parameters.y, parameters.z, parameters.w);
-    }
-    private void ColorTiles(TileObjectView[] tiles, Color color)
+    public void ColorTiles(TileObjectView[] tiles, Color color)
     {
         foreach (var tile in tiles)
         {
-            tile.GetComponent<Renderer>().material.color = color;
+            tile.ColorTile(color);
         }
     }
     private float CalculatePhase(TileObjectView tile, WaveMode mode)

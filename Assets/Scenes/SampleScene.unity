@@ -162,23 +162,24 @@ MonoBehaviour:
     type: 3}
   EncryptSaveFiles: 0
   CurrentStage:
-    Name: Stage 1
+    Name: ssss
     Rewrite: 1
     Level:
       GridSize: 5
       OffsetSize: 0
-      LevelSize: {x: 7, y: 3}
+      LevelSize: {x: 5, y: 5}
+      Elevations: 010001010000000100000000000000000000010101000000000000000000000000000100010101000100000100
       AnimationMode: 3
     ModuleAmounts: 01000000000000000100000000000000
     Modules:
-    - Tile: {x: 5, y: 1}
+    - Tile: {x: 3, y: 0}
       Type: 0
       LaserColorsIndecies: 
-      TargetColorIndex: 2
+      TargetColorIndex: 4
       LaserDirection: 0
-    - Tile: {x: 1, y: 1}
+    - Tile: {x: 0, y: 0}
       Type: 1
-      LaserColorsIndecies: 02000000
+      LaserColorsIndecies: 04000000
       TargetColorIndex: 4
       LaserDirection: 0
 --- !u!4 &17019996

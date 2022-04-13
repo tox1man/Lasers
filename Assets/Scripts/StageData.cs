@@ -20,6 +20,7 @@ public class StageData
         [Range(1, 5)] public int GridSize;
         [Range(0f, 1f)] public float OffsetSize;
         public Vector2Int LevelSize;
+        [HideInInspector] public List<bool> Elevations = new List<bool>();
         public WaveMode AnimationMode;
     }
     [Serializable]
@@ -52,9 +53,10 @@ public class StageData
         {
             GridSize = 2,
             OffsetSize = 0.2f,
-            LevelSize = new Vector2Int(20, 20),
+            LevelSize = new Vector2Int(10, 10),
             AnimationMode = WaveMode.Horizontal
         };
+        Level.Elevations = new List<bool>(Level.LevelSize.x * Level.LevelSize.y);
         Modules = new List<Module>();
     }
     public override string ToString()

@@ -56,15 +56,15 @@ public class RootCustomEditor : Editor
             BeginHorizontal();
             for (int j = 0; j < stage.Level.LevelSize.x; j++)
             {
-                try
-                {
+                if (Application.isPlaying) 
+                { 
                     Texture tex = rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated ? Resources.Load<Texture>("Button.svg") : null;
-                    if (GUILayout.Button(tex, GUILayout.Width(30), GUILayout.Height(30)))
-                    {
-                        rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated = !rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated;
-                    }
+                        if (GUILayout.Button(tex, GUILayout.Width(30), GUILayout.Height(30)))
+                        {
+                            rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated = !rootScript.Level.Tiles[new Vector2Int(j, i)].Elevated;
+                        }
                 }
-                catch 
+                else
                 {
                     GUI.enabled = false;
                     GUILayout.Button("", GUILayout.Width(30), GUILayout.Height(30));

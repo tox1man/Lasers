@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Parameters;
@@ -39,8 +38,8 @@ public class Laser : MonoBehaviour
         {
             if (Physics.Raycast(new Ray(startPoint, direction), out hit, distance))
             {
-                GameObjectView hitObjectView;
-                if (hit.collider.gameObject.TryGetComponent<GameObjectView>(out hitObjectView))
+                GameObjectView hitObjectView = hit.collider.gameObject.GetComponentInParent<GameObjectView>();
+                if (hitObjectView != null)
                 {
                     laserPoints.Add(hit.point);
                     switch (hitObjectView)
@@ -65,7 +64,6 @@ public class Laser : MonoBehaviour
                                 default:
                                     Debug.LogWarning($"Unknown module type. {this}.{nameof(Shoot)}");
                                     break;
-
                             }
                             break;
                         case TileObjectView tile:
