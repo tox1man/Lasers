@@ -11,9 +11,7 @@ public class RootScript : MonoBehaviour
     [SerializeField] public StageData CurrentStage;
 
     public LevelController Level;
-    public GoalController GoalController;
     private MainController mainController;
-    private SaveController saveController;
      
     float deltaTime = 0.0f;
 
@@ -26,8 +24,6 @@ public class RootScript : MonoBehaviour
     public void Awake()
     {
         gameObject.name = Parameters.ROOT_OBJECT_NAME;
-
-        saveController = new SaveController();
 
         Level = new LevelController();
         Level.Start();

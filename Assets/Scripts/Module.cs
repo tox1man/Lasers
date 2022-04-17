@@ -48,7 +48,7 @@ public class Module : IUpdatable
         }
         if (View.ApplyColor(View.MixColors(View.InputColors.ToArray())))
         {
-            GetRoot().GoalController.OnAbsorberColorChanged(GetModulesByType(View.Type));
+            GoalController.instance.OnAbsorberColorChanged(GetModulesByType(View.Type));
         }
     }
     public Laser CreateLaser(bool isEnabled, Direction direction, LaserColor laserColor)

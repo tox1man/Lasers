@@ -1,44 +1,21 @@
 ﻿using System.Collections.Generic;
-using static Parameters;
 public class MainController
 {
-    private List<IUpdatable> _controllersUpdatable;
-    private List<IFixedUpdatable> _controllersFixedUpdatable;
+    private List<IUpdatable> controllersUpdatable;
+    private List<IFixedUpdatable> controllersFixedUpdatable;
 
-    private RootScript _root;
-
-    private InputController _inputController;
-    private ModuleController1 _moduleController;
-    private GoalController _goalController;
-
-    private ModuleObjectView[] _moduleViews;
+    //private InputController inputController;
+    private CameraController cameraController;
+    private ModuleController moduleController;
+    private GoalController goalController;
+    private SaveController saveController;
 
     public void Start()
     {
-        _root = GetRoot();
-        _moduleViews = _root.GetComponent<RootScript>().ModuleViews;
-
-        _controllersUpdatable = new List<IUpdatable>();
-        _controllersFixedUpdatable = new List<IFixedUpdatable>();
+        controllersUpdatable = new List<IUpdatable>();
+        controllersFixedUpdatable = new List<IFixedUpdatable>();
         LoadControllers();
     }
-
-    public void Update()
-    {
-        UpdateControllers();
-    }
-
-    public void FixedUpdate()
-    {
-        FixedUpdateControllers();
-    }
-
-    public void OnDestroy()
-    {
-        _controllersUpdatable.Clear();
-        _controllersFixedUpdatable.Clear();
-    }
-
     private void LoadControllers()
     {
         // TODO - USE SINGLETONS LIKE IN SAVECONTROLLER?
@@ -46,18 +23,42 @@ public class MainController
         //_inputController = new InputController();
         //AddController(_inputController);
 
-        _moduleController = new ModuleController1();
-        AddController(_moduleController);
+        moduleController = new ModuleController();
+        AddController(moduleController);
 
-        _goalController = new GoalController();
-        _root.GoalController = _goalController;
-        AddController(_goalController);
+        goalController = new GoalController();
+        AddController(goalController);
 
+        cameraController = new CameraController();
+        AddController(cameraController);
+
+        saveController = new SaveController();
+    }
+    public void Update()
+    {
+        UpdateControllers();
+    }
+    public void FixedUpdate()
+    {
+        FixedUpdateControllers();
+    }
+    public void OnDestroy()
+    {
+        controllersUpdatable.Clear();
+        controllersFixedUpdatable.Clear();
+    }
+    public void AddController(IUpdatable controller)
+    {
+        controllersUpdatable.Add(controller);
+    }
+    public void AddFixedController(IFixedUpdatable fixedController)
+    {
+        controllersFixedUpdatable.Add(fixedController);
     }
 
     private void UpdateControllers()
     {
-        foreach (IUpdatable controller in _controllersUpdatable)
+        foreach (IUpdatable controller in controllersUpdatable)
         {
             if(controller != null)
             {
@@ -65,10 +66,9 @@ public class MainController
             }
         }
     }
-
     private void FixedUpdateControllers()
     {
-        foreach (IFixedUpdatable controller in _controllersFixedUpdatable)
+        foreach (IFixedUpdatable controller in controllersFixedUpdatable)
         {
             if (controller != null)
             {
@@ -76,23 +76,12 @@ public class MainController
             }
         }
     }
-
-    public void AddController(IUpdatable controller)
-    {
-        _controllersUpdatable.Add(controller);
-    }
-
     private void RemoveController(IUpdatable controller)
     {
-        _controllersUpdatable.Remove(controller);
+        controllersUpdatable.Remove(controller);
     }
-    public void AddFixedController(IFixedUpdatable fixedController)
-    {
-        _controllersFixedUpdatable.Add(fixedController);
-    }
-
     private void RemoveFixedController(IFixedUpdatable fixedController)
     {
-        _controllersFixedUpdatable.Remove(fixedController);
+        controllersFixedUpdatable.Remove(fixedController);
     }
 }

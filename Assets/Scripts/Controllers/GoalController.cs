@@ -3,8 +3,8 @@ using static Parameters;
 
 public class GoalController : IUpdatable
 {
+    public static GoalController instance { get; set; }
     public bool GoalReached { get; private set; }
-    
 
     public delegate void Action(ModuleObjectView[] viewArray);
     public event Action AbsorberColorChanged;
@@ -15,6 +15,12 @@ public class GoalController : IUpdatable
 
     public GoalController()
     {
+        if (instance != null)
+        {
+            Debug.LogWarning(this + " instance already exists. Cant make multiple instances of " + this);
+        }
+        instance = this;
+
         AbsorberColorChanged += CheckGoal;
     }
     
