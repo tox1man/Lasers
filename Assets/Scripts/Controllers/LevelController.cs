@@ -7,7 +7,11 @@ public class LevelController
     private RootScript root;
     private StageData stage;
     public Dictionary<Vector2Int, TileObjectView> Tiles { get; private set; }
-    private GameObject level;
+
+    private GameObject levelObject;
+
+    public Vector2 BordersX;
+    public Vector2 BordersZ;
     public void Start()
     {
         root = GetRoot();
@@ -15,6 +19,10 @@ public class LevelController
 
         Tiles = new Dictionary<Vector2Int, TileObjectView>();
         BuildLevel(new Vector2Int(stage.Level.LevelSize.x, stage.Level.LevelSize.y), stage.Level.GridSize, stage.Level.OffsetSize);
+
+        BordersX = GetLevelBordersX();
+        BordersZ = GetLevelBordersZ();
+
         ColorTiles(GetOuterTiles(), Color.blue);
     }
     public void Update()
@@ -33,7 +41,7 @@ public class LevelController
     {
         string levelName = $"{LEVEL_GAMEOBJECT_NAME} {levelSize.x}x{levelSize.y}";
         var offset = new Vector2(offsetSize, offsetSize);
-        level = new GameObject(levelName);
+        levelObject = new GameObject(levelName);
 
         for (int i = 0; i < levelSize.x; i++)
         {
@@ -48,7 +56,7 @@ public class LevelController
         Vector2Int coord = new Vector2Int(xRow, yRow);
         Vector3 pos = new Vector3(xRow * (offset.x + 1), 0f, yRow * (offset.y + 1)) * gridSize;
 
-        var tileObject = GameObject.Instantiate(root.FloorTilePrefab, pos, Quaternion.identity, level.transform);
+        var tileObject = GameObject.Instantiate(root.FloorTilePrefab, pos, Quaternion.identity, levelObject.transform);
         tileObject.transform.localScale = new Vector3(gridSize, LEVEL_TILE_HEIGHT, gridSize);
         tileObject.name = $"{root.FloorTilePrefab.name} {xRow}.{yRow}";
 
@@ -98,6 +106,28 @@ public class LevelController
     {
         TileObjectView[] outerTiles = GetOuterTiles();
         return outerTiles[Random.Range(0, outerTiles.Length)];
+    }
+    /// <summary>
+    /// Returns border coordinates of current level on the X coordinate.
+    /// First coordinate is always smaller.
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetLevelBordersX()
+    {
+        return new Vector2(
+            Tiles[new Vector2Int(0, 0)].Transform.position.x - stage.Level.GridSize / 2f,
+            Tiles[new Vector2Int(stage.Level.LevelSize.x - 1, 0)].Transform.position.x + stage.Level.GridSize / 2f);
+    }
+    /// <summary>
+    /// Returns border coordinates of current level on the Z coordinate.
+    /// First coordinate is always smaller.
+    /// </summary>
+    /// <returns></returns>
+    public Vector2 GetLevelBordersZ()
+    {
+        return new Vector2(
+            Tiles[new Vector2Int(0, 0)].Transform.position.z - stage.Level.GridSize / 2f,
+            Tiles[new Vector2Int(0, stage.Level.LevelSize.y - 1)].Transform.position.z + stage.Level.GridSize / 2f);
     }
     public void ColorTiles(TileObjectView[] tiles, Color color)
     {

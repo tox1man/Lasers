@@ -36,6 +36,7 @@ public class RootCustomEditor : Editor
             if (stage.ModuleAmounts == null || views[i] == null)
             {
                 Debug.LogError("Some of ModuleObjectView elements hasn't been assigned.");
+                //EndVertical();
                 continue;
             }
             int moduleAmount = 0;

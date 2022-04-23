@@ -31,6 +31,9 @@ public class ModuleCustomEditor : Editor
                 if (Application.isPlaying) { DisplayPosition(myScript); }
                 DisplayLaserColors(myScript);
                 break;
+            //case ModuleType.Portal:
+            //    if(Application.isPlaying) { DisplayPosition(myScript); }
+            //    DisplayPortalPair();
             default:
                 break;
         }

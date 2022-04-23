@@ -5,8 +5,9 @@ public static class Parameters
 {
     // Gameplay Parameters
     public const int LASER_MAX_REFLECTIONS = 20;
-    public const float MAX_RENDER_Y_DIST = -5f;     // vertical distance, below which object is disabled
-    public const float MAX_RENDER_DIST_SQR = 1000f; // distance squared, behind which object is disabled
+    public const float CAMERA_ANGLE = 45f;
+    //public const float CAMERA_MIN_ZOOM_FACTOR = 10f;     // final zoom value would be multiplied by tileSize
+    //public const float CAMERA_MAX_ZOOM_FACTOR = 40f;    // final zoom value would be multiplied by tileSize
 
     // Tags & names
     public const string ROOT_OBJECT_NAME = "Root";
@@ -141,9 +142,9 @@ public static class Parameters
     {
         return $"{type.ToString()}'s Pool";
     }    
-    public static ModuleObjectView[] GetModulesByType(ModuleType type)
+    public static T[] GetModulesByType<T>(T type) where T : ModuleObjectView
     {
-        return GameObject.Find(GetModuleObjectPoolName(type)).GetComponentsInChildren<ModuleObjectView>();
+        return GameObject.Find(GetModuleObjectPoolName(type.Type)).GetComponentsInChildren<T>();
     }
     public static string[] GetColorNamesArray()
     {

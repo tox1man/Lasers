@@ -31,19 +31,18 @@ public class StageData
         public List<int> LaserColorsIndecies;
         public int TargetColorIndex;
         public Direction LaserDirection;
-
-        public void GetModuleFromView(ModuleObjectView view)
-        {
-            Tile = view.Tile;
-            Type = view.Type;
-            TargetColorIndex = view.TargetColor.ColorIndex;
-            LaserDirection = view.LaserDirection;
-            LaserColorsIndecies = new List<int>();
-            foreach(Laser laser in view.Lasers)
-            {
-                LaserColorsIndecies.Add(laser.LaserColor.ColorIndex);
-            }
-        }
+        //public void GetModuleFromView(ModuleObjectView view)
+        //{
+        //    Tile = view.Tile;
+        //    Type = view.Type;
+        //    TargetColorIndex = view.TargetColor.ColorIndex;
+        //    LaserDirection = view.LaserDirection;
+        //    LaserColorsIndecies = new List<int>();
+        //    foreach (Laser laser in view.Lasers)
+        //    {
+        //        LaserColorsIndecies.Add(laser.LaserColor.ColorIndex);
+        //    }
+        //}
     }
     public void SetDefault()
     {

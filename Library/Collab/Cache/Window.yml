@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SimpleSelectedItems:
     m_Keys:
+    - Assets/Scripts/Controllers/CameraController.cs
+    - Assets/Scripts/Controllers/LevelController.cs
+    - Assets/Scripts/Parameters.cs
     - 
-    m_Values: 01
+    m_Values: 00000000
   RevisionSummary: 
   ChangesSearchValue: 
   SelectedHistoryRevision: 

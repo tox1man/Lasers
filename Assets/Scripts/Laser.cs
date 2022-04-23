@@ -46,20 +46,20 @@ public class Laser : MonoBehaviour
                     {
                         case ModuleObjectView module:
                             if (module == null) return;
-                            switch (module.Type)
+                            switch (module)
                             {
-                                case ModuleType.Absorber: // absorb laser
-                                    Absorb(module, LaserColor.Color);
+                                case AbsorberView absorber: // absorb laser
+                                    Absorb(absorber, LaserColor.Color);
                                     break;
-                                case ModuleType.Emitter: // absorb laser
+                                case EmitterView emitter: // absorb laser
                                     Absorb();
                                     break;
-                                case ModuleType.Reflector: // reflect laser around normal
+                                case ReflectorView reflector: // reflect laser around normal
                                     Reflect(direction, hit, distance, laserPoints);
                                     break;
-                                case ModuleType.Disperser: // cast new lasers
-                                    if (module == View) break;
-                                    Disperse(module, hit, distance);
+                                case DisperserView disperser: // cast new lasers
+                                    if (disperser == View) break;
+                                    Disperse(disperser, hit, distance);
                                     break;
                                 default:
                                     Debug.LogWarning($"Unknown module type. {this}.{nameof(Shoot)}");

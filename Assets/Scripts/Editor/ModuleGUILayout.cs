@@ -84,4 +84,8 @@ public static class ModuleGUILayout
         EndHorizontal();
         myScript.Move(position);
     }
+    public static void DisplayPortalPair(ModuleObjectView myScript)
+    {
+        Debug.Log("pair");
+    }
 }

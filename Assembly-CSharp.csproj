@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\View\ModulesView\ReflectorView.cs" />
     <Compile Include="Assets\Scripts\Controllers\MainController.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\AbsorberView.cs" />
+    <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
     <Compile Include="Assets\Scripts\StageData.cs" />
     <Compile Include="Assets\Scripts\Controllers\ModuleController.cs" />
     <Compile Include="Assets\Scripts\Module.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\DisperserView.cs" />
     <Compile Include="Assets\Scripts\Parameters.cs" />
-    <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Intrerfaces\IModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

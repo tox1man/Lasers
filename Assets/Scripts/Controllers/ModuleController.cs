@@ -107,6 +107,7 @@ public class ModuleController : IUpdatable
         {
             module.DeleteGameObject();
             moduleList.Remove(module);
+            //module = null;
         }
     }
 }
