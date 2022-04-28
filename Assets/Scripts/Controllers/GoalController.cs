@@ -6,9 +6,9 @@ public class GoalController : IUpdatable
     public static GoalController instance { get; set; }
     public bool GoalReached { get; private set; }
 
-    public delegate void Action(AbsorberView[] viewArray);
+    public delegate void Action(ModuleObjectView[] viewArray);
     public event Action AbsorberColorChanged;
-    public virtual void OnAbsorberColorChanged(AbsorberView[] viewArray)
+    public virtual void OnAbsorberColorChanged(ModuleObjectView[] viewArray)
     {
         AbsorberColorChanged?.Invoke(viewArray);
     }
@@ -24,21 +24,21 @@ public class GoalController : IUpdatable
         AbsorberColorChanged += CheckGoal;
     }
     
-    public void CheckGoal(AbsorberView[] absorbers)
+    public void CheckGoal(ModuleObjectView[] modules)
     {
         int numberOfCorrect = 0;
         if (GoalReached) { return; }
 
-        for(int i = 0; i < absorbers.Length; i++)
+        for(int i = 0; i < modules.Length; i++)
         {
-            if (absorbers[i] == null || absorbers[i].Type != ModuleType.Absorber) 
+            if (modules[i] == null || modules[i].Type != ModuleType.Absorber) 
             {
                 Debug.LogError("This module type is not an absorber.");
                 return;
             }
-            if (absorbers[i].CheckTargetColor()) { numberOfCorrect++; }
+            if (modules[i].CheckTargetColor()) { numberOfCorrect++; }
         }
-        if (numberOfCorrect != absorbers.Length) { Debug.Log($"{numberOfCorrect}/{absorbers.Length}"); }
+        if (numberOfCorrect != modules.Length) { Debug.Log($"{numberOfCorrect}/{modules.Length}"); }
         else { Debug.Log("GOAL REACHED"); GoalReached = true; }
     }
 

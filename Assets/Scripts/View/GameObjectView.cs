@@ -9,7 +9,7 @@ public class GameObjectView : MonoBehaviour
     public bool IsActive { get => gameObject.activeSelf && DoUpdate; set => IsActive = value; }
     public bool DoUpdate = true;
     public bool DoAnimate = false;
-    public Vector2Int Tile;
+    [HideInInspector] public Vector2Int Tile;
 
     //public bool Damagable = false;
     //[Tooltip("Speed at which object rotates.")] 
@@ -24,10 +24,10 @@ public class GameObjectView : MonoBehaviour
     /// <summary>
     /// Moves this agent in direction.
     /// </summary>
-    /// <param name="direction">Direction to move towards.</param>
-    private void Move(Vector3 direction)
+    /// <param name="pos">Direction to move towards.</param>
+    private void Move(Vector3 pos)
     {
-        Transform.position = new Vector3(direction.x, Transform.position.y, direction.z);
+        Transform.position = new Vector3(pos.x, Transform.position.y, pos.z);
     }
     public void Move(Vector2Int tilePos)
     {

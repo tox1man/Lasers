@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using static Parameters;
 public class Module : IUpdatable
 {
@@ -9,31 +10,30 @@ public class Module : IUpdatable
     {
         View = view;
         _moduleGameObject = CreateModuleGameobject();
-
         switch (View.Type)
         {
             case ModuleType.Absorber:
-                View.TargetColor = view.TargetColor;
                 break;
             case ModuleType.Disperser:
-                CreateLaser(false, Direction.North, LaserColors.White);
-                CreateLaser(false, Direction.North, LaserColors.White);
-                CreateLaser(false, Direction.North, LaserColors.White);
+                AddLaser(CreateLaser(LaserColors.White));
+                AddLaser(CreateLaser(LaserColors.White));
+                AddLaser(CreateLaser(LaserColors.White));
                 break;
             case ModuleType.Reflector:
                 break;
             case ModuleType.Emitter:
-                View.LaserColors = view.LaserColors;
-                View.LaserDirection = view.LaserDirection;
-                if (View.LaserColors == null || View.LaserColors.Count == 0) 
-                {
-                    View.LaserColors = new System.Collections.Generic.List<LaserColor>();
-                    View.LaserColors.Add(LaserColors.White);
-                }
-                CreateLaser(true, View.LaserDirection, View.LaserColors[0]);
+                AddLaser(CreateLaser(View.LaserColors[0], View.LaserDirection, true));
+                break;
+            case ModuleType.Portal:
+                CreatePortalPair();
                 break;
         }
-    } 
+    }  
+    private void AddLaser(Laser laser)
+    {
+        if (View.Lasers == null) { View.Lasers = new List<Laser>(); }
+        View.Lasers.Add(laser);
+    }
     public void Update()
     {
         if (!View || !View.IsActive) return;
@@ -43,32 +43,38 @@ public class Module : IUpdatable
             if (View.Type != ModuleType.Emitter) View.ToggleLaserFromEditor(laser, false);
             if (laser.Line.enabled)
             {
-                laser.Shoot(GetVectorFromDir(View.LaserDirection), 100f);
+                laser.Shoot(GetVectorFromDir(View.LaserDirection), LASER_MAX_DIST);
             }
         }
-        if (View.ApplyColor(View.MixColors(View.InputColors.ToArray())))
+        if (View.Type == ModuleType.Absorber && View.ApplyColor(View.MixColors(View.InputColors.ToArray())))
         {
-            GoalController.instance.OnAbsorberColorChanged(GetModulesByType(View.Type));
+            GoalController.instance.OnAbsorberColorChanged(GetModulesByType(View));
         }
     }
-    public Laser CreateLaser(bool isEnabled, Direction direction, LaserColor laserColor)
+    public Laser CreateLaser(LaserColor laserColor, Direction direction = Direction.North, bool isEnabled = false)
     {
         GameObject laserObject = GameObject.Instantiate(View.laserPrefab, _moduleGameObject.transform);
-        Laser laser = laserObject.GetComponent<Laser>();
-
-        laser.ToggleFromEditor = isEnabled;
-        laser.Line = laserObject.GetComponent<LineRenderer>();
-        laser.Line.enabled = laser.ToggleFromEditor;
-
-        View.LaserDirection = direction;
-
-        laser.View = View;
-        laser.LaserColor = laserColor;
-        laser.Direction = GetVectorFromDir(direction);
-
-        View.Lasers.Add(laser);
+        Laser laser = new Laser(View, laserColor, GetVectorFromDir(direction), laserObject.GetComponent<LineRenderer>());
+        laser.Enabled = isEnabled;
 
         return laser;
+    }
+    public void CreatePortalPair()
+    {
+        PortalView portalView = (PortalView)View;
+        portalView.PortalPair = new PortalPair(portalView, portalView.Tile, portalView.Tile);
+
+        GameObject laserObject1 = GameObject.Instantiate(portalView.laserPrefab, _moduleGameObject.transform);
+        Laser laser1 = new Laser(portalView, LaserColors.White, GetVectorFromDir(Direction.North), laserObject1.GetComponent<LineRenderer>());
+        laserObject1.transform.SetParent(portalView.gameObject.transform.Find(PORTAL1_NAME));
+        laser1.Enabled = false;
+        AddLaser(laser1);
+
+        GameObject laserObject2 = GameObject.Instantiate(portalView.laserPrefab, _moduleGameObject.transform);
+        Laser laser2 = new Laser(portalView, LaserColors.White, GetVectorFromDir(Direction.North), laserObject2.GetComponent<LineRenderer>());
+        laserObject2.transform.SetParent(portalView.gameObject.transform.Find(PORTAL2_NAME));
+        laser2.Enabled = false;
+        AddLaser(laser2);
     }
     public void DeleteGameObject()
     {

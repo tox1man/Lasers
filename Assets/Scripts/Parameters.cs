@@ -6,12 +6,16 @@ public static class Parameters
     // Gameplay Parameters
     public const int LASER_MAX_REFLECTIONS = 20;
     public const float CAMERA_ANGLE = 45f;
+    public const float LASER_MAX_DIST = 100f;
+    public const float PORTAL_MIN_DOT = 0.2f;
     //public const float CAMERA_MIN_ZOOM_FACTOR = 10f;     // final zoom value would be multiplied by tileSize
     //public const float CAMERA_MAX_ZOOM_FACTOR = 40f;    // final zoom value would be multiplied by tileSize
 
     // Tags & names
     public const string ROOT_OBJECT_NAME = "Root";
     public const string LEVEL_GAMEOBJECT_NAME = "Level";
+    public const string PORTAL1_NAME = "Orange";
+    public const string PORTAL2_NAME = "Blue";
 
     // Level Parameters
     public const float LEVEL_TILE_HEIGHT = 50f;     // height of the level tile
@@ -36,7 +40,8 @@ public static class Parameters
         Absorber,
         Emitter,
         Reflector,
-        Disperser
+        Disperser,
+        Portal
     }
     public struct LaserColor
     {
@@ -112,24 +117,24 @@ public static class Parameters
     public static Quaternion GetQuaternionFromDir(Direction dir)
     {
         Quaternion result = Quaternion.identity;
-        Vector3 resultVector = Vector3.zero;
+        //Vector3 resultVector = Vector3.zero;
         switch (dir)
         {
             case Direction.North:
                 result = Quaternion.LookRotation(Vector3.forward);
-                resultVector = Vector3.forward;
+                //resultVector = Vector3.forward;
                 break;
             case Direction.East:
                 result = Quaternion.LookRotation(Vector3.right);
-                resultVector = Vector3.right;
+                //resultVector = Vector3.right;
                 break;
             case Direction.South:
                 result = Quaternion.LookRotation(Vector3.back);
-                resultVector = Vector3.back;
+                //resultVector = Vector3.back;
                 break;
             case Direction.West:
                 result = Quaternion.LookRotation(Vector3.left);
-                resultVector = Vector3.left;
+                //resultVector = Vector3.left;
                 break;
         }
         return result;
@@ -142,9 +147,9 @@ public static class Parameters
     {
         return $"{type.ToString()}'s Pool";
     }    
-    public static T[] GetModulesByType<T>(T type) where T : ModuleObjectView
+    public static ModuleObjectView[] GetModulesByType(ModuleObjectView type)
     {
-        return GameObject.Find(GetModuleObjectPoolName(type.Type)).GetComponentsInChildren<T>();
+        return GameObject.Find(GetModuleObjectPoolName(type.Type)).GetComponentsInChildren<ModuleObjectView>();
     }
     public static string[] GetColorNamesArray()
     {

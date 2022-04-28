@@ -2,92 +2,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Parameters;
 
-public class ModuleObjectView : GameObjectView
+public abstract class ModuleObjectView : GameObjectView
 {
     [Header("Module Object Parameters")]
     public ModuleType Type;
-    //public GameObject laserPrefab;
-    //public Renderer Renderer;
+    public GameObject laserPrefab;
 
-    //public List<Laser> Lasers;
-    //public List<LaserColor> LaserColors;
-    //[HideInInspector] public List<Color> InputColors = new List<Color>();                // Displayed in Editor only for Absorber and Disperser
-    //[HideInInspector] public LaserColor TargetColor = Parameters.LaserColors.White;      // Displayed in Editor only for Absorber
-    //[HideInInspector] public Direction LaserDirection = Direction.North;                 // Displayed in Editor only for Emitter
+    public PortalPair PortalPair;
+    public List<LaserColor> LaserColors = new List<LaserColor> { Parameters.LaserColors.White };
+    public List<Laser> Lasers = new List<Laser>();
+    [HideInInspector] public Direction LaserDirection = Direction.North;                 // Displayed in Editor only for Emitter
+    [HideInInspector] public List<Color> InputColors = new List<Color>();                // Displayed in Editor only for Absorber and Disperser
+    [HideInInspector] public LaserColor TargetColor = Parameters.LaserColors.White;      // Displayed in Editor only for Absorber
 
-    //public void SetDefault()
-    //{
-    //    Tile.Set(0, 0);
-    //    Move(Tile);
-    //    LaserColors = new List<LaserColor>();
-    //    TargetColor = Parameters.LaserColors.White;
-    //    LaserDirection = Direction.North;
-    //}
-
-    public void GetModuleFromView(ref StageData.Module module)
-    {
-        module.Tile = Tile;
-        module.Type = Type;
-    }
-
-    //public void GetViewFromStageModule(StageData.Module module)
-    //{
-    //    Tile = module.Tile;
-    //    Type = module.Type;
-    //    TargetColor = Parameters.LaserColors.ColorsList[module.TargetColorIndex];
-    //    LaserDirection = module.LaserDirection;
-    //    LaserColors = new List<LaserColor>();
-    //    foreach (int index in module.LaserColorsIndecies)
-    //    {
-    //        LaserColors.Add(Parameters.LaserColors.ColorsList[index]);
-    //    }
-    //}
-    //public void TryAddColor(Color other)
-    //{
-    //    if (!InputColors.Contains(other)) InputColors.Add(other);
-    //}
-    //public void ToggleLaserFromEditor(Laser laser, bool isEnabled)
-    //{
-    //    laser.ToggleFromEditor = isEnabled;
-    //    laser.enabled = isEnabled;
-    //    laser.Line.enabled = isEnabled;
-    //}    
-    //public void TryToggleLaserInPlaymode(Laser laser, bool isEnabled)
-    //{
-    //    if (laser.ToggleFromEditor == isEnabled)
-    //    {
-    //        laser.enabled = isEnabled;
-    //        laser.Line.enabled = isEnabled;
-    //    }
-    //}
-    //public Color MixColors(Color[] colors)
-    //{
-    //    if (colors.Length == 0) return Color.white;
-
-    //    InputColors = new List<Color>();
-    //    float r = 0;
-    //    float g = 0;
-    //    float b = 0;
-
-    //    foreach (Color color in colors)
-    //    {
-    //        r += color.r;
-    //        g += color.g;
-    //        b += color.b;
-    //    }
-    //    return new Color(r, g, b);
-    //}
-    //public bool ApplyColor(Color color)
-    //{
-    //    if (Renderer.material.color != color)
-    //    {
-    //        Renderer.material.color = color;
-    //        return true;
-    //    }
-    //    return false;
-    //}
-    //public bool CheckTargetColor()
-    //{
-    //    return Renderer.material.color == TargetColor.Color;
-    //}
+    /// <summary>
+    /// Sets default parameters of the Module.
+    /// </summary>
+    public abstract void SetDefault();
+    /// <summary>
+    /// Change module parameters from Stage.Module object.
+    /// </summary>
+    /// <param name="module"></param>
+    public abstract void GetViewFromStageModule(StageData.Module module);
+    /// <summary>
+    /// Tries to add color to InputColors list.
+    /// </summary>
+    /// <param name="other"></param>
+    public abstract void TryAddColor(Color other);
+    /// <summary>
+    /// Toggles the enable field of the Laser.
+    /// </summary>
+    /// <param name="laser"></param>
+    /// <param name="isEnabled"></param>
+    public abstract void ToggleLaserFromEditor(Laser laser, bool isEnabled);
+    /// <summary>
+    /// Mixes all InputColors and return resulting color.
+    /// </summary>
+    /// <param name="colors">Colors to mix</param>
+    /// <returns></returns>
+    public abstract Color MixColors(Color[] colors);
+    /// <summary>
+    /// Applies color to module Material.
+    /// </summary>
+    /// <param name="color">Color to apply.</param>
+    /// <returns></returns>
+    public abstract bool ApplyColor(Color color);
+    /// <summary>
+    /// Returns if current material color identical to TargetColor of the Module.
+    /// </summary>
+    /// <returns></returns>
+    public abstract bool CheckTargetColor();
 }

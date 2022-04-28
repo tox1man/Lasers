@@ -76,7 +76,7 @@ public class SaveController
         root.CurrentStage.Modules = new List<StageData.Module>();
         foreach (ModuleObjectView viewType in root.ModuleViews)
         {
-            foreach (ModuleObjectView view in GetModulesByType(viewType.Type))
+            foreach (ModuleObjectView view in GetModulesByType(viewType))
             {
                 StageData.Module moduleToSave = new StageData.Module();
                 moduleToSave.GetModuleFromView(view);

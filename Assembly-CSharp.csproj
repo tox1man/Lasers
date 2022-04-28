@@ -80,7 +80,8 @@
     <Compile Include="Assets\Scripts\Controllers\LevelController.cs" />
     <Compile Include="Assets\Scripts\View\ModulesView\DisperserView.cs" />
     <Compile Include="Assets\Scripts\Parameters.cs" />
-    <Compile Include="Assets\Scripts\Intrerfaces\IModule.cs" />
+    <Compile Include="Assets\Scripts\View\ModulesView\PortalView.cs" />
+    <Compile Include="Assets\Scripts\PortalPair.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

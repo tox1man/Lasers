@@ -36,12 +36,11 @@ public class RootCustomEditor : Editor
             if (stage.ModuleAmounts == null || views[i] == null)
             {
                 Debug.LogError("Some of ModuleObjectView elements hasn't been assigned.");
-                //EndVertical();
                 continue;
             }
             int moduleAmount = 0;
             try { moduleAmount = stage.ModuleAmounts[i]; }
-            catch { Debug.LogError("Module amount index is out of range."); }
+            catch { Debug.LogError("Module amount index is out of range."); EndVertical(); }
 
             BeginVertical();
             DisplayModulesParameters(views[i].Type, i, moduleAmount);
@@ -131,17 +130,12 @@ public class RootCustomEditor : Editor
                     {
                         moduleLabel = $"{type} {i + 1}";
                         LabelField(moduleLabel);
-                        BeginHorizontal();
-                        try 
-                        { 
-                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
-                            DisplayAbsorberTargetColor(module);
-                            DisplayPosition(module);
-                            EndHorizontal();
-                        }
-                        catch 
+                        if (Application.isPlaying)
                         {
-                            LabelField("Avaliable in Play."); 
+                            BeginHorizontal();
+                                ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                                DisplayAbsorberTargetColor(module);
+                                DisplayPosition(module);
                             EndHorizontal();
                         }
                     }
@@ -151,14 +145,10 @@ public class RootCustomEditor : Editor
                     {
                         moduleLabel = $"{type} {i + 1}";
                         LabelField(moduleLabel);
-                        try
+                        if (Application.isPlaying)
                         {
                             ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
                             DisplayPosition(module);
-                        }
-                        catch 
-                        { 
-                            LabelField("Avaliable in Play."); 
                         }
                     }
                     break;
@@ -167,21 +157,16 @@ public class RootCustomEditor : Editor
                     {
                         moduleLabel = $"{type} {i + 1}";
                         LabelField($"{moduleLabel}");
-                        BeginHorizontal();
-                        try 
+                        if (Application.isPlaying)
                         {
-                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
-                                DisplayLaserDirection(module);
-                                DisplayLaserColors(module);
-                            EndHorizontal();
                             BeginHorizontal();
-                                DisplayPosition(module);
+                                ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                                    DisplayLaserDirection(module);
+                                    DisplayLaserColors(module);
+                                EndHorizontal();
+                                BeginHorizontal();
+                                    DisplayPosition(module);
                             EndHorizontal();
-                        }
-                        catch 
-                        { 
-                            LabelField("Avaliable in Play."); 
-                            EndHorizontal(); 
                         }
                     }
                     break;
@@ -190,14 +175,22 @@ public class RootCustomEditor : Editor
                     {
                         moduleLabel = $"{type} {i + 1}";
                         LabelField(moduleLabel);
-                        try
+                        if (Application.isPlaying)
                         {
                             ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
                             DisplayPosition(module);
                         }
-                        catch 
-                        { 
-                            LabelField("Avaliable in Play."); 
+                    }
+                    break;
+                case ModuleType.Portal:
+                    for (int i = 0; i < amount; i++)
+                    {
+                        moduleLabel = $"{type} {i + 1}";
+                        LabelField(moduleLabel);
+                        if (Application.isPlaying)
+                        {
+                            ModuleObjectView module = GameObject.Find(moduleLabel).GetComponent<ModuleObjectView>();
+                            DisplayPosition(module);
                         }
                     }
                     break;

@@ -1,95 +1,58 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using static Parameters;
+﻿using UnityEngine;
+
 public sealed class ReflectorView : ModuleObjectView
 {
-    [Header("Reflector Parameters")]
-    public GameObject laserPrefab;
-    public Renderer Renderer;
-
-    public List<Laser> Lasers;
-    public List<LaserColor> LaserColors;
-    [HideInInspector] public List<Color> InputColors = new List<Color>();                // Displayed in Editor only for Absorber and Disperser
-    [HideInInspector] public LaserColor TargetColor = Parameters.LaserColors.White;      // Displayed in Editor only for Absorber
-    [HideInInspector] public Direction LaserDirection = Direction.North;                 // Displayed in Editor only for Emitter
-
-    public void SetDefault()
+    public override void SetDefault()
     {
         Tile.Set(0, 0);
         Move(Tile);
-        LaserColors = new List<LaserColor>();
-        TargetColor = Parameters.LaserColors.White;
-        LaserDirection = Direction.North;
     }
-    public void GetViewFromStageModule(StageData.Module module)
+    public override void GetViewFromStageModule(StageData.Module module)
     {
         Tile = module.Tile;
         Type = module.Type;
-        TargetColor = Parameters.LaserColors.ColorsList[module.TargetColorIndex];
-        LaserDirection = module.LaserDirection;
-        LaserColors = new List<LaserColor>();
-        foreach (int index in module.LaserColorsIndecies)
-        {
-            LaserColors.Add(Parameters.LaserColors.ColorsList[index]);
-        }
     }
-    public new void GetModuleFromView(ref StageData.Module module)
+    /// <summary>
+    /// Not implemented for Disperser type modules.
+    /// </summary>
+    /// <param name="other"></param>
+    public override void TryAddColor(Color other)
     {
-        base.GetModuleFromView(ref module);
-        module.TargetColorIndex = TargetColor.ColorIndex;
-        module.LaserDirection = LaserDirection;
-        module.LaserColorsIndecies = new List<int>();
-        foreach (Laser laser in Lasers)
-        {
-            module.LaserColorsIndecies.Add(laser.LaserColor.ColorIndex);
-        }
+        throw new System.NotImplementedException();
     }
-    public void TryAddColor(Color other)
+    /// <summary>
+    /// Not implemented for Disperser type modules.
+    /// </summary>
+    /// <param name="laser"></param>
+    /// <param name="isEnabled"></param>
+    public override void ToggleLaserFromEditor(Laser laser, bool isEnabled)
     {
-        if (!InputColors.Contains(other)) InputColors.Add(other);
+        throw new System.NotImplementedException();
     }
-    public void ToggleLaserFromEditor(Laser laser, bool isEnabled)
+    /// <summary>
+    /// Not implemented for Disperser type modules.
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public override bool ApplyColor(Color color)
     {
-        laser.ToggleFromEditor = isEnabled;
-        laser.enabled = isEnabled;
-        laser.Line.enabled = isEnabled;
+        throw new System.NotImplementedException();
     }
-    public void TryToggleLaserInPlaymode(Laser laser, bool isEnabled)
+    /// <summary>
+    /// Not implemented for Disperser type modules.
+    /// </summary>
+    /// <param name="colors"></param>
+    /// <returns></returns>
+    public override Color MixColors(Color[] colors)
     {
-        if (laser.ToggleFromEditor == isEnabled)
-        {
-            laser.enabled = isEnabled;
-            laser.Line.enabled = isEnabled;
-        }
+        throw new System.NotImplementedException();
     }
-    public Color MixColors(Color[] colors)
+    /// <summary>
+    /// Not implemented for Disperser type modules.
+    /// </summary>
+    /// <returns></returns>
+    public override bool CheckTargetColor()
     {
-        if (colors.Length == 0) return Color.white;
-
-        InputColors = new List<Color>();
-        float r = 0;
-        float g = 0;
-        float b = 0;
-
-        foreach (Color color in colors)
-        {
-            r += color.r;
-            g += color.g;
-            b += color.b;
-        }
-        return new Color(r, g, b);
-    }
-    public bool ApplyColor(Color color)
-    {
-        if (Renderer.material.color != color)
-        {
-            Renderer.material.color = color;
-            return true;
-        }
-        return false;
-    }
-    public bool CheckTargetColor()
-    {
-        return Renderer.material.color == TargetColor.Color;
+        throw new System.NotImplementedException();
     }
 }

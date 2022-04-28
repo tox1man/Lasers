@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2966413038792348203}
   - component: {fileID: 2966413038792348200}
   - component: {fileID: -2885328388264487899}
-  - component: {fileID: -4685343948652458868}
   m_Layer: 0
   m_Name: Absorber
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2966413038792348201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25, y: 0, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 5936759441602367394}
@@ -114,36 +113,11 @@ MonoBehaviour:
   Transform: {fileID: 2966413038792348197}
   DoUpdate: 1
   DoAnimate: 0
-  Tile: {x: 5, y: 1}
-  Type: 0
-  laserPrefab: {fileID: 6390495340930493647, guid: ecc2bb1b96114614b89da7e41a868e42,
-    type: 3}
-  Renderer: {fileID: 2966413038792348203}
-  Lasers: []
-  InputColors: []
-  LaserDirection: 0
---- !u!114 &-4685343948652458868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2966413038792348201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c45cb5ba86dbfb748874104c444fa967, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectPrefab: {fileID: 2966413038792348201}
-  Transform: {fileID: 2966413038792348197}
-  DoUpdate: 1
-  DoAnimate: 0
   Tile: {x: 0, y: 0}
   Type: 0
   laserPrefab: {fileID: 6390495340930493647, guid: ecc2bb1b96114614b89da7e41a868e42,
     type: 3}
-  Renderer: {fileID: 6390495340930493644, guid: ecc2bb1b96114614b89da7e41a868e42,
-    type: 3}
+  Renderer: {fileID: 2966413038792348203}
   Lasers: []
   InputColors: []
   LaserDirection: 0
