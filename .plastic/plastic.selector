@@ -1,0 +1,3 @@
+rep "TopDown shooter@toximaner@cloud"
+  path "/"
+    smartbranch "/main"

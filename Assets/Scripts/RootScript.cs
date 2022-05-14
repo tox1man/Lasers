@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
+using static Parameters;
 
 public class RootScript : MonoBehaviour
 {
     [Header("View components")]
     //ORDER OF MODULES MATTERS!
     public ModuleObjectView[] ModuleViews;
+
     [Header("Stage Settings")]
     [SerializeField] public GameObject FloorTilePrefab;
-    public bool EncryptSaveFiles;
     [SerializeField] public StageData CurrentStage;
+    public bool EncryptSaveFiles;
 
-    public LevelController Level;
+    public LevelBuilder Level { get; private set; }
     private MainController mainController;
+    public GameMode GameMode { get; set; }
      
-    float deltaTime = 0.0f;
+    private float deltaTime = 0.0f;
 
     public delegate void Action(int viewIndex, bool addAmount);
     public event Action ModulesAmountChanged;
@@ -21,11 +24,12 @@ public class RootScript : MonoBehaviour
     {
         ModulesAmountChanged?.Invoke(viewIndex, addAmount);
     }
+
     public void Awake()
     {
         gameObject.name = Parameters.ROOT_OBJECT_NAME;
 
-        Level = new LevelController();
+        Level = new LevelBuilder();
         Level.Start();
 
         mainController = new MainController();

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using static Parameters;
 
@@ -34,7 +33,7 @@ public class SaveController
     {
         stageData = new StageData();
 
-        string path = EditorUtility.OpenFilePanel("Choose stage to load", Application.persistentDataPath, "stage");
+        string path = UnityEditor.EditorUtility.OpenFilePanel("Choose stage to load", Application.persistentDataPath, "stage");
         stageSaver = new StageSaver(path);
         stageData = stageSaver.Load();
 
@@ -67,7 +66,7 @@ public class SaveController
         stageData.Level = root.CurrentStage.Level;
 
         stageData.Level.Elevations = new List<bool>(stageData.Level.LevelSize.x * stageData.Level.LevelSize.y);
-        foreach (TileObjectView tile in root.Level.Tiles.Values)
+        foreach (TileObjectView tile in GetLevel().Tiles.Values)
         {
             stageData.Level.Elevations.Add(tile.Elevated);
         }

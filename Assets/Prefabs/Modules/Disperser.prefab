@@ -233,7 +233,6 @@ GameObject:
   - component: {fileID: 2966413038792348197}
   - component: {fileID: 2966413038792348202}
   - component: {fileID: 2966413038792348203}
-  - component: {fileID: 8271857023909370046}
   m_Layer: 0
   m_Name: Disperser
   m_TagString: Untagged
@@ -306,30 +305,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8271857023909370046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2966413038792348201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c37fef96ecd0a2d44919a18e189ccc23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectPrefab: {fileID: 2966413038792348201}
-  Transform: {fileID: 2966413038792348197}
-  DoUpdate: 1
-  DoAnimate: 0
-  Tile: {x: 0, y: 0}
-  Type: 3
-  laserPrefab: {fileID: 6390495340930493647, guid: ecc2bb1b96114614b89da7e41a868e42,
-    type: 3}
-  Renderer: {fileID: 2966413038792348203}
-  Lasers: []
-  InputColors: []
-  LaserDirection: 0
 --- !u!1 &3231749134145363206
 GameObject:
   m_ObjectHideFlags: 0

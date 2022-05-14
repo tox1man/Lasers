@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2966413038792348202}
   - component: {fileID: 2966413038792348203}
   - component: {fileID: 2966413038792348200}
-  - component: {fileID: -2885328388264487899}
   m_Layer: 0
   m_Name: Absorber
   m_TagString: Untagged
@@ -97,30 +96,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-2885328388264487899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2966413038792348201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c37fef96ecd0a2d44919a18e189ccc23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectPrefab: {fileID: 2966413038792348201}
-  Transform: {fileID: 2966413038792348197}
-  DoUpdate: 1
-  DoAnimate: 0
-  Tile: {x: 0, y: 0}
-  Type: 0
-  laserPrefab: {fileID: 6390495340930493647, guid: ecc2bb1b96114614b89da7e41a868e42,
-    type: 3}
-  Renderer: {fileID: 2966413038792348203}
-  Lasers: []
-  InputColors: []
-  LaserDirection: 0
 --- !u!1001 &778000020335272815
 PrefabInstance:
   m_ObjectHideFlags: 0

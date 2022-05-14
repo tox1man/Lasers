@@ -45,7 +45,7 @@ public class Laser
         {
             if (Physics.Raycast(new Ray(startPoint, direction), out hit, distance))
             {
-                GameObjectView hitObjectView = hit.collider.gameObject.GetComponentInParent<GameObjectView>();
+                GameObjectView hitObjectView = hit.collider.gameObject.GetComponentInParent<GameObjectView>(); // try to optimize?
                 if (hitObjectView != null)
                 {
                     laserPoints.Add(hit.point);
@@ -69,7 +69,6 @@ public class Laser
                                     Disperse(module, hit, distance);
                                     break;
                                 case ModuleType.Portal: // teleport laser on the other side of the portal
-                                    //if (module == View) break;
                                     Teleport(module, hit, direction, distance);
                                     break;
                                 default:

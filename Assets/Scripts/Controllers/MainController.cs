@@ -4,7 +4,7 @@ public class MainController
     private List<IUpdatable> controllersUpdatable;
     private List<IFixedUpdatable> controllersFixedUpdatable;
 
-    //private InputController inputController;
+    private InputController inputController;
     private CameraController cameraController;
     private ModuleController moduleController;
     private GoalController goalController;
@@ -18,10 +18,10 @@ public class MainController
     }
     private void LoadControllers()
     {
-        // TODO - USE SINGLETONS LIKE IN SAVECONTROLLER?
+        // TODO - USE SINGLETONS LIKE IN SAVECONTROLLER OR STATIC?
 
-        //_inputController = new InputController();
-        //AddController(_inputController);
+        inputController = new InputController();
+        AddController(inputController);
 
         moduleController = new ModuleController();
         AddController(moduleController);
@@ -55,7 +55,6 @@ public class MainController
     {
         controllersFixedUpdatable.Add(fixedController);
     }
-
     private void UpdateControllers()
     {
         foreach (IUpdatable controller in controllersUpdatable)

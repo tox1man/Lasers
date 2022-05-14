@@ -22,23 +22,21 @@ public class Module : IUpdatable
             case ModuleType.Reflector:
                 break;
             case ModuleType.Emitter:
-                AddLaser(CreateLaser(View.LaserColors[0], View.LaserDirection, true));
+                // reference to "view" is fine, but reference to "View" doesnt save laserColor. why?
+                AddLaser(CreateLaser(view.LaserColors[0], view.LaserDirection, true));
                 break;
             case ModuleType.Portal:
                 CreatePortalPair();
                 break;
         }
-    }  
-    private void AddLaser(Laser laser)
-    {
-        if (View.Lasers == null) { View.Lasers = new List<Laser>(); }
-        View.Lasers.Add(laser);
     }
     public void Update()
     {
         if (!View || !View.IsActive) return;
-
-        foreach(Laser laser in View.Lasers)
+        // Perfom actions based on current GameState.
+        CheckGameState();
+        // Shoot every availiable laser.
+        foreach (Laser laser in View.Lasers)
         {
             if (View.Type != ModuleType.Emitter) View.ToggleLaserFromEditor(laser, false);
             if (laser.Line.enabled)
@@ -46,12 +44,43 @@ public class Module : IUpdatable
                 laser.Shoot(GetVectorFromDir(View.LaserDirection), LASER_MAX_DIST);
             }
         }
+        // Invoke event after absorbers color has been changed.
         if (View.Type == ModuleType.Absorber && View.ApplyColor(View.MixColors(View.InputColors.ToArray())))
         {
             GoalController.instance.OnAbsorberColorChanged(GetModulesByType(View));
         }
     }
-    public Laser CreateLaser(LaserColor laserColor, Direction direction = Direction.North, bool isEnabled = false)
+    private void CheckGameState()
+    {
+        switch (GetRoot().GameMode)
+        {
+            case GameMode.ItemSelect:
+                if (View.Selected)
+                {
+                    View.DisplayItemProperties();
+                }
+                break;
+            default:
+                View.Deselect();
+                break;
+        }
+    }
+    private GameObject CreateModuleGameobject()
+    {
+        _moduleGameObject = GameObject.Instantiate(View.ObjectPrefab, View.Transform.position, Quaternion.identity);
+
+        float scaleValue = GetStage().Level.GridSize;
+        Vector3 moduleScale = new Vector3(scaleValue / 2 * View.Transform.localScale.x, 
+                                    scaleValue / 2 * View.Transform.localScale.y, 
+                                    scaleValue / 2 * View.Transform.localScale.z);
+        _moduleGameObject.transform.localScale = moduleScale;
+        _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y);
+
+        View = _moduleGameObject.GetComponent<ModuleObjectView>();
+
+        return _moduleGameObject;
+    }
+    private Laser CreateLaser(LaserColor laserColor, Direction direction = Direction.North, bool isEnabled = false)
     {
         GameObject laserObject = GameObject.Instantiate(View.laserPrefab, _moduleGameObject.transform);
         Laser laser = new Laser(View, laserColor, GetVectorFromDir(direction), laserObject.GetComponent<LineRenderer>());
@@ -59,7 +88,12 @@ public class Module : IUpdatable
 
         return laser;
     }
-    public void CreatePortalPair()
+    private void AddLaser(Laser laser)
+    {
+        if (View.Lasers == null) { View.Lasers = new List<Laser>(); }
+        View.Lasers.Add(laser);
+    }
+    private void CreatePortalPair()
     {
         PortalView portalView = (PortalView)View;
         portalView.PortalPair = new PortalPair(portalView, portalView.Tile, portalView.Tile);
@@ -80,20 +114,5 @@ public class Module : IUpdatable
     {
         View = null;
         GameObject.Destroy(_moduleGameObject);
-    }
-    private GameObject CreateModuleGameobject()
-    {
-        _moduleGameObject = GameObject.Instantiate(View.ObjectPrefab, View.Transform.position, Quaternion.identity);
-
-        float scaleValue = GetStage().Level.GridSize;
-        Vector3 moduleScale = new Vector3(scaleValue / 2 * View.Transform.localScale.x, 
-                                    scaleValue / 2 * View.Transform.localScale.y, 
-                                    scaleValue / 2 * View.Transform.localScale.z);
-        _moduleGameObject.transform.localScale = moduleScale;
-        _moduleGameObject.transform.Translate(Vector2.up * View.Transform.localScale.y);
-
-        View = _moduleGameObject.GetComponent<ModuleObjectView>();
-
-        return _moduleGameObject;
     }
 }

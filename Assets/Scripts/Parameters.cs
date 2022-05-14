@@ -20,6 +20,23 @@ public static class Parameters
     // Level Parameters
     public const float LEVEL_TILE_HEIGHT = 50f;     // height of the level tile
 
+    //Global Events
+    public static class GlobalEvents
+    {
+        public static event Action<GameMode> GameModeChangeAction;
+        public static void OnGameModeChange(GameMode value)
+        {
+            GameModeChangeAction?.Invoke(value);
+        }
+    }
+
+    public enum GameMode
+    {
+        Menu,
+        Play,
+        Pause,
+        ItemSelect
+    }
     public enum WaveMode                            // type of level animation
     {
         Horizontal,
@@ -30,10 +47,10 @@ public static class Parameters
     }
     public enum Direction 
     { 
-        North = 0, 
-        East = 1,  
-        South = 2, 
-        West = 3 
+        North, 
+        East,  
+        South, 
+        West 
     }
     public enum ModuleType
     {
@@ -76,7 +93,7 @@ public static class Parameters
     {
         return GameObject.FindObjectOfType<RootScript>();
     }
-    public static LevelController GetLevel()
+    public static LevelBuilder GetLevel()
     {
         return GetRoot().Level;
     }
@@ -117,24 +134,19 @@ public static class Parameters
     public static Quaternion GetQuaternionFromDir(Direction dir)
     {
         Quaternion result = Quaternion.identity;
-        //Vector3 resultVector = Vector3.zero;
         switch (dir)
         {
             case Direction.North:
                 result = Quaternion.LookRotation(Vector3.forward);
-                //resultVector = Vector3.forward;
                 break;
             case Direction.East:
                 result = Quaternion.LookRotation(Vector3.right);
-                //resultVector = Vector3.right;
                 break;
             case Direction.South:
                 result = Quaternion.LookRotation(Vector3.back);
-                //resultVector = Vector3.back;
                 break;
             case Direction.West:
                 result = Quaternion.LookRotation(Vector3.left);
-                //resultVector = Vector3.left;
                 break;
         }
         return result;
@@ -165,5 +177,12 @@ public static class Parameters
         string[] s = Application.dataPath.Split('/');
         string projectName = s[s.Length - 2];
         return projectName;
+    }
+    public static GameMode ChangeGameMode(GameMode newMode)
+    {
+        GetRoot().GameMode = newMode;
+        GlobalEvents.OnGameModeChange(newMode);
+        Debug.Log(newMode);
+        return newMode;
     }
 }

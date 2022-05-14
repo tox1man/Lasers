@@ -6,10 +6,13 @@ public class GameObjectView : MonoBehaviour
     [Header("Object View Parameters")]
     public GameObject ObjectPrefab;
     public Transform Transform;
+    public GameObject UIPrefab;
     public bool IsActive { get => gameObject.activeSelf && DoUpdate; set => IsActive = value; }
     public bool DoUpdate = true;
-    public bool DoAnimate = false;
+    public bool DoAnimate;
+    [HideInInspector] public bool Selected;
     [HideInInspector] public Vector2Int Tile;
+    [HideInInspector] private GameObject UIInstance;
 
     //public bool Damagable = false;
     //[Tooltip("Speed at which object rotates.")] 
@@ -20,7 +23,6 @@ public class GameObjectView : MonoBehaviour
         gameObject.SetActive(value);
         DoUpdate = value;
     }
-
     /// <summary>
     /// Moves this agent in direction.
     /// </summary>
@@ -35,7 +37,20 @@ public class GameObjectView : MonoBehaviour
         Move(tile.Transform.position);
         Tile = tilePos;
     }
-
+    public void Select()
+    {
+        Selected = true;
+        Light halo = this.GetComponent<Light>();
+        UIInstance = Instantiate(UIPrefab, Transform);
+        halo.enabled = true;
+    }
+    public void Deselect()
+    {
+        Selected = false;
+        Light halo = this.GetComponent<Light>();
+        Destroy(UIInstance);
+        halo.enabled = false;
+    }
     /// <summary>
     /// Performs gradual rotation towards target direction.
     /// </summary>
