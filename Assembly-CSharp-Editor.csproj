@@ -290,6 +290,9 @@
     <Reference Include="UnityEditor.Graphs">
       <HintPath>A:\Programs\Unity\2020.3.16f1\Editor\Data\Managed\UnityEditor.Graphs.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.Android.Extensions">
+      <HintPath>A:\Programs\Unity\2020.3.16f1\Editor\Data\PlaybackEngines\AndroidPlayer\UnityEditor.Android.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions">
       <HintPath>A:\Programs\Unity\2020.3.16f1\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.dll</HintPath>
     </Reference>
