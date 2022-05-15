@@ -6,18 +6,16 @@ public class GameObjectView : MonoBehaviour
     [Header("Object View Parameters")]
     public GameObject ObjectPrefab;
     public Transform Transform;
-    public GameObject UIPrefab;
+    public Canvas UICanvas;
     public bool IsActive { get => gameObject.activeSelf && DoUpdate; set => IsActive = value; }
     public bool DoUpdate = true;
     public bool DoAnimate;
-    [HideInInspector] public bool Selected;
+    public bool Selected { get; set; }
     [HideInInspector] public Vector2Int Tile;
-    [HideInInspector] private GameObject UIInstance;
 
     //public bool Damagable = false;
     //[Tooltip("Speed at which object rotates.")] 
     //[Range(1f, 10f)] public float RotationSpeed; 
-
     public void SetActive(bool value)
     {
         gameObject.SetActive(value);
@@ -37,25 +35,26 @@ public class GameObjectView : MonoBehaviour
         Move(tile.Transform.position);
         Tile = tilePos;
     }
-    public void Select()
+    public void Select(GameObjectView view)
     {
+        //Debug.Log($"{view.gameObject.name}, {this.gameObject.name}");
+        if (view != this) return;
         Selected = true;
         Light halo = this.GetComponent<Light>();
-        UIInstance = Instantiate(UIPrefab, Transform);
         halo.enabled = true;
     }
-    public void Deselect()
+    public void Deselect(GameObjectView view)
     {
+        if (view != this) return;
         Selected = false;
         Light halo = this.GetComponent<Light>();
-        Destroy(UIInstance);
         halo.enabled = false;
     }
     /// <summary>
     /// Performs gradual rotation towards target direction.
     /// </summary>
     /// <param name="direction">Direction to rotate towards.</param>
-    //public void Rotate(Vector3 direction)
+    //public void RotateTowards(Vector3 direction)
     //{
     //    Quaternion currentRotation = transform.rotation.normalized;
     //    if (direction.normalized != Vector3.zero)
@@ -64,7 +63,7 @@ public class GameObjectView : MonoBehaviour
 
     //        if (currentRotation != targetRotation)
     //        {
-    //            transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, RotationSpeed);
+    //            transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, 10f);
     //        }
     //    }
     //}

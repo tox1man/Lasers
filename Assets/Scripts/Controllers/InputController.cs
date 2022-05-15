@@ -15,13 +15,14 @@ public class InputController : IUpdatable
     public GameObjectView SelectedItem;
 
     // Mobile Input
-    private float lastTouchTime;
-    private int lastFrameTouchCount;
-    public InputAction<Touch> onTap = new InputAction<Touch>();
-    public InputAction<Touch[]> onTouches = new InputAction<Touch[]>();
+    public InputAction<Touch> OnTap = new InputAction<Touch>();
+    public InputAction<Touch[]> OnTouches = new InputAction<Touch[]>();
     // Desktop Input
-    public InputAction<float> onVerticalAxis = new InputAction<float>();
-    public InputAction<float> onHorizontalAxis = new InputAction<float>();
+    public InputAction<float> OnVerticalAxis = new InputAction<float>();
+    public InputAction<float> OnHorizontalAxis = new InputAction<float>();
+    // Select/Deselect Item
+    public InputAction<GameObjectView> OnItemSelect = new InputAction<GameObjectView>();
+    public InputAction<GameObjectView> OnItemDeselect = new InputAction<GameObjectView>();
 
     public InputController()
     {
@@ -30,7 +31,7 @@ public class InputController : IUpdatable
             Debug.LogWarning(this + " instance already exists. Cant make multiple instances of " + this);
         }
         instance = this;
-        onTap.EventAction += SelectItemOnTap;
+        OnTap.EventAction += SelectItemOnTap;
     }
     public void Update()
     {
@@ -51,11 +52,13 @@ public class InputController : IUpdatable
                 {
                     case ModuleObjectView module:
                         Parameters.ChangeGameMode(Parameters.GameMode.ItemSelect);
-                        if(SelectedItem != null)
+                        if (SelectedItem != null)
                         {
-                            SelectedItem.Deselect();
+                            OnItemDeselect.OnAction(SelectedItem);
+                            //SelectedItem.Deselect();
                         }
-                        module.Select();
+                        OnItemSelect.OnAction(module);
+                        //module.Select();
                         SelectedItem = module;
                         break;
                     default:
@@ -83,11 +86,11 @@ public class InputController : IUpdatable
     }
     private void CheckHorizontalAxis()
     {
-        onHorizontalAxis.OnAction(Input.GetAxisRaw("Horizontal"));
+        OnHorizontalAxis.OnAction(Input.GetAxisRaw("Horizontal"));
     }
     private void CheckVerticalAxis()
     {
-        onVerticalAxis.OnAction(Input.GetAxisRaw("Vertical"));
+        OnVerticalAxis.OnAction(Input.GetAxisRaw("Vertical"));
     }
     private void CheckTouches()
     {
@@ -95,16 +98,13 @@ public class InputController : IUpdatable
         // Short single tap
         if (IsSingleTap(touches))
         {
-            onTap.OnAction(touches[0]);
-            lastTouchTime = 0f;
+            OnTap.OnAction(touches[0]);
         }
         else
         // Multiple touches OR no touches OR long touches
         {
-            onTouches.OnAction(touches);
-            lastTouchTime += Time.deltaTime;
+            OnTouches.OnAction(touches);
         }
-        lastFrameTouchCount = touches.Length;
     }
     private bool IsSingleTap(Touch[] touches)
     {

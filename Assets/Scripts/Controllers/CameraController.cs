@@ -30,9 +30,9 @@ public class CameraController : IUpdatable
 
         SetDefaultCameraPos(MainCamera);
 
-        InputController.instance.onTouches.EventAction += CameraHandleTouch;
-        InputController.instance.onVerticalAxis.EventAction += CameraHandleVerticalAxis;
-        InputController.instance.onHorizontalAxis.EventAction += CameraHandleHorizontalAxis;
+        InputController.instance.OnTouches.EventAction += CameraHandleTouch;
+        InputController.instance.OnVerticalAxis.EventAction += CameraHandleVerticalAxis;
+        InputController.instance.OnHorizontalAxis.EventAction += CameraHandleHorizontalAxis;
     }
     public void Update()
     {

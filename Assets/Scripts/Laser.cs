@@ -37,7 +37,9 @@ public class Laser
         else
         {
             laserPoints = new List<Vector3>();
-            laserPoints.Add(View.Transform.position);
+            Vector3 firstPos = View.Transform.position;
+            firstPos.y += View.Transform.localScale.y;
+            laserPoints.Add(firstPos);
         }
 
         Vector3 startPoint = laserPoints[laserPoints.Count - 1];

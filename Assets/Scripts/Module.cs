@@ -9,6 +9,7 @@ public class Module : IUpdatable
     public Module(ModuleObjectView view, out GameObject _moduleGameObject)
     {
         View = view;
+
         _moduleGameObject = CreateModuleGameobject();
         switch (View.Type)
         {
@@ -29,6 +30,8 @@ public class Module : IUpdatable
                 CreatePortalPair();
                 break;
         }
+        InputController.instance.OnItemSelect.EventAction += View.Select;
+        InputController.instance.OnItemDeselect.EventAction += View.Deselect;
     }
     public void Update()
     {
@@ -57,11 +60,11 @@ public class Module : IUpdatable
             case GameMode.ItemSelect:
                 if (View.Selected)
                 {
-                    View.DisplayItemProperties();
+                    //
                 }
                 break;
             default:
-                View.Deselect();
+                View.Deselect(View);
                 break;
         }
     }
@@ -112,6 +115,8 @@ public class Module : IUpdatable
     }
     public void DeleteGameObject()
     {
+        InputController.instance.OnItemSelect.EventAction -= View.Select;
+        InputController.instance.OnItemDeselect.EventAction -= View.Deselect;
         View = null;
         GameObject.Destroy(_moduleGameObject);
     }

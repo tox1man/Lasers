@@ -47,12 +47,6 @@ public abstract class ModuleObjectView : GameObjectView
     /// <param name="color">Color to apply.</param>
     /// <returns></returns>
     public abstract bool ApplyColor(Color color);
-
-    public void DisplayItemProperties()
-    {
-
-    }
-
     /// <summary>
     /// Returns if current material color identical to TargetColor of the Module.
     /// </summary>
